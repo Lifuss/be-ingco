@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Product from '../../models/products';
+import Product from '../../models/Product';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 
 const createProduct = ctrlWrapper(async (req: Request, res: Response) => {
