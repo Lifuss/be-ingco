@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import requestError from '../utils/requestError';
-import User from '../models/user';
+
 import { NextFunction, Response } from 'express';
 import { CustomRequest, IUser } from '../types/express';
+import User from '../models/User';
 
 const authentication = async (
   req: CustomRequest,

@@ -2,18 +2,20 @@ import { Request, Response } from 'express';
 import Product from '../../models/Product';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 
+export type TBody = {
+  name: string;
+  article: string;
+  price: number;
+  priceBulk: number;
+  priceRetailRecommendation: number;
+  description: string;
+  imageUrl: string;
+  countInStock: number;
+  category?: string;
+};
+
 const createProduct = ctrlWrapper(async (req: Request, res: Response) => {
-  const { name, price, description, imageUrl, countInStock, category } =
-    req.body;
-  const product = new Product({
-    name,
-    price,
-    description,
-    imageUrl,
-    countInStock,
-    category,
-  });
-  await product.save();
+  const product = await Product.create(req.body as TBody);
   res.status(201).json(product);
 });
 

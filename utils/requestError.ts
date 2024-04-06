@@ -20,7 +20,8 @@ const messages: Messages = {
 };
 
 const requestError = (status: number, message = messages[status]) => {
-  throw new RequestError(status, message);
+  const error = new RequestError(status, message);
+  return error;
 };
 
 export default requestError;

@@ -3,6 +3,7 @@ import cors from 'cors';
 import productRouter from './routes/products';
 import dotenv from 'dotenv';
 import logger from 'morgan';
+import { RequestError } from './utils/requestError';
 
 dotenv.config();
 
@@ -20,8 +21,9 @@ app.use((req: Request, res: Response) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
-  res.status(500).json({ message: `Server error ${err.message}` });
+app.use((err: RequestError, req: Request, res: Response, _: NextFunction) => {
+  const { status = 500, message = 'Server error' } = err;
+  res.status(status).json({ message });
 });
 
 export default app;
