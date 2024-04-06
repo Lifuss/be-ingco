@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Product from '../../models/Product';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 
-export type TBody = {
+export type TProductBody = {
   name: string;
   article: string;
   price: number;
@@ -15,7 +15,7 @@ export type TBody = {
 };
 
 const createProduct = ctrlWrapper(async (req: Request, res: Response) => {
-  const product = await Product.create(req.body as TBody);
+  const product = await Product.create(req.body as TProductBody);
   res.status(201).json(product);
 });
 

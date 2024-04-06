@@ -23,3 +23,7 @@ export const updateProductSchema = Joi.object({
   imageUrl: Joi.string(),
   category: Joi.string(),
 });
+
+export const categorySchema = Joi.object({
+  name: Joi.string().required(),
+});

@@ -3,9 +3,14 @@ import Product from '../../models/Product';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 
 const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
-  const { q } = req.query;
-  const query = q ? { name: { $regex: q as string, $options: 'i' } } : {};
-  const products = await Product.find(query);
+  const { q = '' } = req.query as { q?: string };
+
+  const products = await Product.find({
+    $or: [
+      { name: { $regex: q, $options: 'i' } },
+      { article: { $regex: q, $options: 'i' } },
+    ],
+  });
   res.json(products);
 });
 
