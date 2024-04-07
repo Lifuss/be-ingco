@@ -1,11 +1,10 @@
-import jwt from 'jsonwebtoken';
-import requestError from '../utils/requestError';
-
 import { NextFunction, Response } from 'express';
 import { CustomRequest, IUser } from '../types/express';
+import requestError from '../utils/requestError';
+import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
-const authentication = async (
+const authAdmin = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction,
@@ -26,10 +25,13 @@ const authentication = async (
 
     const user = await User.findById(id);
 
-    if (user && user.token && user.token === token) {
+    if (user && user.role === 'admin' && user.token && user.token === token) {
       req.user = user.toObject() as IUser;
     } else {
-      throw requestError(401);
+      throw requestError(
+        403,
+        'Forbidden: You do not have enough rights to perform this action',
+      );
     }
 
     next();
@@ -43,4 +45,4 @@ const authentication = async (
   }
 };
 
-export default authentication;
+export default authAdmin;

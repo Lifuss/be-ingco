@@ -6,6 +6,7 @@ import { RequestError } from './utils/requestError';
 
 import productRouter from './routes/products';
 import categoryRouter from './routes/categories';
+import userRouter from './routes/users';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(logger('dev'));
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/categories', categoryRouter);
 

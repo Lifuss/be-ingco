@@ -27,3 +27,22 @@ export const updateProductSchema = Joi.object({
 export const categorySchema = Joi.object({
   name: Joi.string().required(),
 });
+
+export const userSchema = Joi.object({
+  email: Joi.string().email().required(),
+  login: Joi.string().required(),
+  password: Joi.string().required(),
+  role: Joi.string().valid('user', 'admin').default('user'),
+  isVerified: Joi.boolean().default(false),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  surName: Joi.string().required(),
+  phone: Joi.string().required(),
+  codeEDRPOU: Joi.string().required(),
+  about: Joi.string().allow('', null),
+  address: Joi.string().allow('', null),
+  orders: Joi.array().items(Joi.string()),
+  cart: Joi.array().items(Joi.string()),
+  favorites: Joi.array().items(Joi.string()),
+  token: Joi.string().default(null),
+});

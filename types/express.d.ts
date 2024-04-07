@@ -1,24 +1,24 @@
 import { Request } from 'express';
+import mongoose from 'mongoose';
 import { User as PassportUser } from 'passport';
 
 export interface IUser {
-  _id: string;
   email: string;
+  login: string;
   password: string;
-  roles: string[];
-  token: string;
-  profile: {
-    firstName: string;
-    lastName: string;
-    phone: string;
-  };
-  avatar: string;
-  buyHistory: string[];
-  favoriteProducts: string[];
-  createdAt: string;
-  updatedAt: string;
-  resetPasswordToken?: string;
-  resetPasswordExpires?: Date;
+  role: 'user' | 'admin';
+  isVerified: boolean;
+  firstName: string;
+  lastName: string;
+  surName: string;
+  phone: string;
+  codeEDRPOU: string;
+  about?: string;
+  address?: string;
+  orders: mongoose.Types.ObjectId[];
+  cart: mongoose.Types.ObjectId[];
+  favorites: mongoose.Types.ObjectId[];
+  token?: string;
 }
 type User = IUser & PassportUser;
 
