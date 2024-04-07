@@ -17,6 +17,10 @@ const updateProduct = ctrlWrapper(async (req: Request, res: Response) => {
     throw requestError(400, 'Empty request body');
   }
 
+  if (Object.hasOwnProperty.call(body, 'category') && body.category === '') {
+    body.category = null;
+  }
+
   const product = await Product.findByIdAndUpdate(id, body, { new: true });
 
   if (!product) {

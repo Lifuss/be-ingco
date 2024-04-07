@@ -10,7 +10,11 @@ const productSchema = new mongoose.Schema(
     priceRetailRecommendation: { type: Number, required: true },
     countInStock: { type: Number, required: true },
     imageUrl: { type: String, required: true },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      default: null,
+    },
   },
   { timestamps: true, versionKey: false },
 );

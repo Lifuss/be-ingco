@@ -11,7 +11,7 @@ export type TProductBody = {
   description: string;
   imageUrl: string;
   countInStock: number;
-  category?: string;
+  category?: string | null;
 };
 
 const createProduct = ctrlWrapper(async (req: Request, res: Response) => {

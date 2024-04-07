@@ -21,7 +21,7 @@ export const updateProductSchema = Joi.object({
   priceRetailRecommendation: Joi.number(),
   countInStock: Joi.number(),
   imageUrl: Joi.string(),
-  category: Joi.string(),
+  category: Joi.string().allow('', null),
 });
 
 export const categorySchema = Joi.object({
