@@ -1,74 +1,78 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: [true, 'Email is required'],
-    unique: true,
-  },
-  login: {
-    type: String,
-    required: [true, 'Login is required'],
-  },
-  password: { type: String, required: true },
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
-  },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
-  firstName: {
-    type: String,
-    required: [true, 'First name is required'],
-  },
-  lastName: {
-    type: String,
-    required: [true, 'Last name is required'],
-  },
-  surName: {
-    type: String,
-    required: [true, 'Surname is required'],
-  },
-  phone: {
-    type: String,
-    required: [true, 'Phone is required'],
-  },
-  codeEDRPOU: {
-    type: String,
-    required: [true, 'Code EDRPOU is required'],
-  },
-  about: {
-    type: String,
-  },
-  address: {
-    type: String,
-  },
-  orders: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Order',
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
     },
-  ],
-  cart: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
+    login: {
+      type: String,
+      required: [true, 'Login is required'],
+      unique: true,
     },
-  ],
-  favorites: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
+    password: { type: String, required: true },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
     },
-  ],
-  token: {
-    type: String,
-    default: null,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    firstName: {
+      type: String,
+      required: [true, 'First name is required'],
+    },
+    lastName: {
+      type: String,
+      required: [true, 'Last name is required'],
+    },
+    surName: {
+      type: String,
+      required: [true, 'Surname is required'],
+    },
+    phone: {
+      type: String,
+      required: [true, 'Phone is required'],
+    },
+    codeEDRPOU: {
+      type: String,
+      required: [true, 'Code EDRPOU is required'],
+    },
+    about: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    orders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order',
+      },
+    ],
+    cart: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+    ],
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+    ],
+    token: {
+      type: String,
+      default: null,
+    },
   },
-});
+  { timestamps: true, versionKey: false },
+);
 
 const User = mongoose.model('User', userSchema);
 

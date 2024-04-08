@@ -46,3 +46,27 @@ export const userSchema = Joi.object({
   favorites: Joi.array().items(Joi.string()),
   token: Joi.string().default(null),
 });
+
+export const updateUserSchema = Joi.object({
+  email: Joi.string().email(),
+  login: Joi.string(),
+  password: Joi.string(),
+  role: Joi.string().valid('user', 'admin'),
+  isVerified: Joi.boolean(),
+  firstName: Joi.string(),
+  lastName: Joi.string(),
+  surName: Joi.string(),
+  phone: Joi.string(),
+  codeEDRPOU: Joi.string(),
+  about: Joi.string().allow('', null),
+  address: Joi.string().allow('', null),
+  orders: Joi.array().items(Joi.string()),
+  cart: Joi.array().items(Joi.string()),
+  favorites: Joi.array().items(Joi.string()),
+  token: Joi.string(),
+});
+
+export const loginSchema = Joi.object({
+  login: Joi.string().required(),
+  password: Joi.string().required(),
+});

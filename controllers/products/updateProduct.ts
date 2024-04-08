@@ -1,21 +1,15 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import Product from '../../models/Product';
 import requestError from '../../utils/requestError';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 import { TProductBody } from './createProduct';
+import validateUpdateInput from '../../utils/validateUpdateInput';
 
 const updateProduct = ctrlWrapper(async (req: Request, res: Response) => {
   const { id } = req.params;
   const body: Partial<TProductBody> = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw requestError(400, 'Invalid product id');
-  }
-
-  if (Object.keys(body).length === 0) {
-    throw requestError(400, 'Empty request body');
-  }
+  validateUpdateInput(id, body);
 
   if (Object.hasOwnProperty.call(body, 'category') && body.category === '') {
     body.category = null;

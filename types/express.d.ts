@@ -1,6 +1,5 @@
 import { Request } from 'express';
 import mongoose from 'mongoose';
-import { User as PassportUser } from 'passport';
 
 export interface IUser {
   email: string;
@@ -20,30 +19,11 @@ export interface IUser {
   favorites: mongoose.Types.ObjectId[];
   token?: string;
 }
-type User = IUser & PassportUser;
+type User = IUser;
 
 export interface CustomRequest extends Request {
   user?: User;
   headers: {
     authorization?: string;
   };
-}
-export interface Query {
-  'categories.brand': string[];
-  'categories.color': string[];
-  'categories.size': string[];
-  'categories.sex'?: string[];
-  'categories.season'?: string[];
-  [key: string]: string[] | undefined;
-}
-export interface ReqQuery {
-  page?: string;
-  limit?: string;
-  sort?: 'createdAt' | 'price';
-  order?: 'asc' | 'desc';
-  brand?: string;
-  color?: string;
-  size?: string;
-  sex?: string;
-  season?: string;
 }

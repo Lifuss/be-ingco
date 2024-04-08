@@ -3,6 +3,7 @@ import { IUser } from '../../types/express';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 import { Request, Response } from 'express';
 import requestError from '../../utils/requestError';
+import bcrypt from 'bcryptjs';
 
 const createUser = ctrlWrapper(async (req: Request, res: Response) => {
   const user = req.body as IUser;
@@ -13,8 +14,9 @@ const createUser = ctrlWrapper(async (req: Request, res: Response) => {
   if (checkUser) {
     throw requestError(409, 'User already exists');
   }
+  const hashPassword = await bcrypt.hash(user.password, 5);
 
-  const newUser = await User.create(user);
+  const newUser = await User.create({ ...user, password: hashPassword });
   res.status(201).json(newUser);
 });
 
