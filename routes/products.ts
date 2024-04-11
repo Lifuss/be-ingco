@@ -8,6 +8,7 @@ import updateProduct from '../controllers/products/updateProduct';
 import deleteProduct from '../controllers/products/deleteProduct';
 
 const router = Router();
+// TODO: Add upload middleware
 
 router.get('/', getAllProducts);
 router.post('/', validateBody(productSchema), createProduct);

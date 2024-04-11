@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// TODO: add field for last activity
+
 const userSchema = new mongoose.Schema(
   {
     email: {

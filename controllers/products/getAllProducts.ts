@@ -13,5 +13,6 @@ const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
   });
   res.json(products);
 });
+// TODO: Add pagination
 
 export default getAllProducts;

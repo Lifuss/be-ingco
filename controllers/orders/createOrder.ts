@@ -4,6 +4,7 @@ import ctrlWrapper from '../../utils/ctrlWrapper';
 import { Request, Response } from 'express';
 
 const getNextSequence = async (name: string) => {
+  //TODO 1: Create a counter document with the given name if it doesn't exist
   const counter = await Counter.findByIdAndUpdate(
     name,
     { $inc: { seq: 1 } },

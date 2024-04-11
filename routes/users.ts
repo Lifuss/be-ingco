@@ -8,6 +8,7 @@ import getAllUsers from '../controllers/users/getAllUsers';
 import updateUser from '../controllers/users/updateUser';
 
 const router = Router();
+// TODO: Add route that allow admit edit user password
 
 router.get('/', authAdmin, getAllUsers);
 router.post('/', authAdmin, validateBody(userSchema), createUser);
