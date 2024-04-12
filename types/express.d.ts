@@ -2,6 +2,7 @@ import { Request } from 'express';
 import mongoose from 'mongoose';
 
 export interface IUser {
+  _id: mongoose.Types.ObjectId;
   email: string;
   login: string;
   password: string;
@@ -19,10 +20,9 @@ export interface IUser {
   favorites: mongoose.Types.ObjectId[];
   token?: string;
 }
-type User = IUser;
 
 export interface CustomRequest extends Request {
-  user?: User;
+  user?: IUser;
   headers: {
     authorization?: string;
   };

@@ -1,21 +1,42 @@
-import Counter from '../../models/Counter';
 import Order from '../../models/Order';
 import ctrlWrapper from '../../utils/ctrlWrapper';
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import getNextSequence from '../../utils/getNextSequence';
+import { CustomRequest, IUser } from '../../types/express';
 
-const getNextSequence = async (name: string) => {
-  //TODO 1: Create a counter document with the given name if it doesn't exist
-  const counter = await Counter.findByIdAndUpdate(
-    name,
-    { $inc: { seq: 1 } },
-    { new: true, upsert: true },
-  );
-  return counter.seq;
+type orderProducts = {
+  _id: string;
+  quantity: number;
+  totalPriceByOneProduct: number;
+  price: number;
+}[];
+
+type orderBody = {
+  userId: string;
+  products: orderProducts;
+  totalPrice: number;
+  comment?: string;
+  shippingAddress?: string;
 };
-const createOrder = ctrlWrapper(async (req: Request, res: Response) => {
-  const { userId, products } = req.body;
+
+const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
+  const { products, totalPrice } = req.body as orderBody;
+  const { _id } = req.user as IUser;
+
   const orderCode = await getNextSequence('orderCode');
-  const order = await Order.create({ orderCode, userId, products });
+  const order = await Order.create({
+    orderCode,
+    status: 'очікує підтвердження',
+    products: products.map((product) => ({
+      product: product._id,
+      quantity: product.quantity,
+      price: product.price,
+      totalPriceByOneProduct: product.totalPriceByOneProduct,
+    })),
+    userId: _id,
+    totalPrice,
+    isPaid: false,
+  });
   res.status(201).json(order);
 });
 

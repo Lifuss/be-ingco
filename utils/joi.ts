@@ -71,26 +71,16 @@ export const loginSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-export const orderSchema = Joi.object({
-  orderCode: Joi.string().required(),
-  date: Joi.date().required(),
-  status: Joi.string().required(),
+export const createOrderSchema = Joi.object({
   products: Joi.array().items(
     Joi.object({
-      product: Joi.string().required(),
+      _id: Joi.string().required(),
       quantity: Joi.number().required(),
+      totalPriceByOneProduct: Joi.number().required(),
+      price: Joi.number().required(),
     }),
   ),
   shippingAddress: Joi.string().allow(''),
-  user: Joi.string().required(),
   totalPrice: Joi.number().required(),
-  paymentMethod: Joi.string().allow(''),
-  paymentResult: Joi.object({
-    id: Joi.string().allow(''),
-    status: Joi.string().allow(''),
-    update_time: Joi.string().allow(''),
-    email_address: Joi.string().email().allow(''),
-  }),
-  isPaid: Joi.boolean().required(),
   comment: Joi.string().allow(''),
 });

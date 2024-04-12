@@ -1,10 +1,24 @@
 import mongoose from 'mongoose';
 
+const orderStatusEnum = [
+  'очікує підтвердження',
+  'очікує оплати',
+  'комплектується',
+  'відправлено',
+  'замовлення виконано',
+  'замовлення скасовано',
+];
+const orderPaymentMethodEnum = ['на карту', 'на підприємство', 'готівка'];
+const orderPaymentStatusEnum = ['оплачено', 'не оплачено'];
+
 const orderSchema = new mongoose.Schema(
   {
     orderCode: { type: String, required: true, unique: true },
-    date: { type: Date, required: true },
-    status: { type: String, required: true },
+    status: {
+      type: String,
+      enum: orderStatusEnum,
+      default: 'очікує підтвердження',
+    },
     products: [
       {
         product: {
@@ -13,21 +27,22 @@ const orderSchema = new mongoose.Schema(
           required: true,
         },
         quantity: { type: Number, required: true },
+        totalPriceByOneProduct: { type: Number, required: true },
       },
     ],
     shippingAddress: { type: String },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
     totalPrice: { type: Number, required: true },
-    paymentMethod: { type: String },
-    paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
+    payment: {
+      method: { type: String, enum: orderPaymentMethodEnum },
+      status: {
+        type: String,
+        enum: orderPaymentStatusEnum,
+      },
     },
     isPaid: { type: Boolean, required: true, default: false },
     comment: { type: String },
