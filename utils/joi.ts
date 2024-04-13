@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { orderStatusEnum } from '../models/Order';
 
 export const productSchema = Joi.object({
   name: Joi.string().required(),
@@ -83,4 +84,22 @@ export const createOrderSchema = Joi.object({
   shippingAddress: Joi.string().allow(''),
   totalPrice: Joi.number().required(),
   comment: Joi.string().allow(''),
+});
+
+export const updateOrderSchema = Joi.object({
+  status: Joi.string().valid(...orderStatusEnum),
+  isPaid: Joi.boolean(),
+  newProducts: Joi.array()
+    .items(
+      Joi.object({
+        _id: Joi.string().required(),
+        quantity: Joi.number().required(),
+        totalPriceByOneProduct: Joi.number().required(),
+        price: Joi.number().required(),
+      }),
+    )
+    .optional(),
+  totalPrice: Joi.number().optional(),
+  comment: Joi.string().allow('').optional(),
+  shippingAddress: Joi.string().allow('').optional(),
 });

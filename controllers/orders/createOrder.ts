@@ -33,7 +33,7 @@ const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
       price: product.price,
       totalPriceByOneProduct: product.totalPriceByOneProduct,
     })),
-    userId: _id,
+    user: { userId: _id, login: req.user?.login },
     totalPrice,
     isPaid: false,
   });
