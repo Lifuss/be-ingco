@@ -3,6 +3,7 @@ import ctrlWrapper from '../../utils/ctrlWrapper';
 import { Response } from 'express';
 import getNextSequence from '../../utils/getNextSequence';
 import { CustomRequest, IUser } from '../../types/express';
+import User from '../../models/User';
 
 type orderProducts = {
   _id: string;
@@ -36,6 +37,10 @@ const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     user: { userId: _id, login: req.user?.login },
     totalPrice,
     isPaid: false,
+  });
+
+  await User.findByIdAndUpdate(_id, {
+    $push: { orders: order._id },
   });
   res.status(201).json(order);
 });

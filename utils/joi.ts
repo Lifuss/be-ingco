@@ -89,7 +89,7 @@ export const createOrderSchema = Joi.object({
 export const updateOrderSchema = Joi.object({
   status: Joi.string().valid(...orderStatusEnum),
   isPaid: Joi.boolean(),
-  newProducts: Joi.array()
+  products: Joi.array()
     .items(
       Joi.object({
         _id: Joi.string().required(),

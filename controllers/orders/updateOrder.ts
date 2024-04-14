@@ -7,7 +7,7 @@ import validateUpdateInput from '../../utils/validateUpdateInput';
 type TUpdateOrderBody = {
   status: (typeof orderStatusEnum)[number];
   isPaid: boolean;
-  newProducts: {
+  products: {
     _id: string;
     quantity: number;
     price: number;
@@ -24,7 +24,17 @@ const updateOrder = ctrlWrapper(async (req: Request, res: Response) => {
 
   validateUpdateInput(id, updateData);
 
-  const order = await Order.findByIdAndUpdate(id, updateData, { new: true });
+  if (updateData.products?.length) {
+    const newTotalPrice = updateData.products?.reduce((acc, product) => {
+      acc += product.totalPriceByOneProduct;
+      return acc;
+    }, 0);
+    updateData.totalPrice = newTotalPrice;
+  }
+
+  const order = await Order.findByIdAndUpdate(id, updateData, {
+    new: true,
+  }).populate('products._id');
 
   if (!order) {
     throw requestError(404, 'Order not found');
