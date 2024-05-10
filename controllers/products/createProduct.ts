@@ -17,17 +17,13 @@ export type TProductBody = {
 };
 
 const createProduct = ctrlWrapper(async (req: Request, res: Response) => {
-  console.log('req.files >', req.file);
   const image = req.file;
-  console.log('body >', req.body);
 
   if (!image) {
     throw new Error('Image is required');
   }
   const oldPath = path.join(__dirname, '..', '..', 'tmp', image.filename);
   const newPath = path.join(__dirname, '..', '..', 'static', image.filename);
-  console.log('oldPath >', oldPath);
-  console.log('newPath >', newPath);
 
   rename(oldPath, newPath, function (err) {
     if (err) {
