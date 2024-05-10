@@ -9,7 +9,6 @@ export const productSchema = Joi.object({
   priceBulk: Joi.number().required(),
   priceRetailRecommendation: Joi.number().required(),
   countInStock: Joi.number().required(),
-  imageUrl: Joi.string().required(),
   category: Joi.string(),
 });
 

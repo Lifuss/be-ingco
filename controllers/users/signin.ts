@@ -24,7 +24,15 @@ const signin = ctrlWrapper(async (req: Request, res: Response) => {
     { token },
     { new: true },
   ).select('-password');
-  res.json(updatedUser);
+
+  console.log(updatedUser);
+
+  res.json({
+    login: updatedUser?.login,
+    token: updatedUser?.token,
+    role: updatedUser?.role,
+    isVerified: updatedUser?.isVerified,
+  });
 });
 
 export default signin;

@@ -1,22 +1,53 @@
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import logger from 'morgan';
+import morgan from 'morgan';
 import { RequestError } from './utils/requestError';
 
 import productRouter from './routes/products';
 import categoryRouter from './routes/categories';
 import userRouter from './routes/users';
 import orderRouter from './routes/orders';
+import path from 'path';
 
 dotenv.config();
 
 const app = express();
 
-app.use(logger('dev'));
+// Logger for static files
+const staticFilesLogger = morgan(function (tokens, req, res) {
+  let url = tokens.url(req, res);
+  if (url && url.startsWith('/static')) {
+    url = url.split('_').pop();
+  }
+  return [
+    tokens.method(req, res),
+    url,
+    tokens.status(req, res),
+    '-',
+    tokens['response-time'](req, res),
+    'ms',
+  ].join(' ');
+});
+
+// Logger for route handlers
+const routeHandlersLogger = morgan('dev');
+
 app.use(cors());
+
+app.use('/static', staticFilesLogger);
+app.use(
+  '/static',
+  express.static(path.join(__dirname, 'static'), {
+    maxAge: '1y',
+    etag: true,
+    lastModified: true,
+  }),
+);
+
 app.use(express.json());
 
+app.use(routeHandlersLogger);
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/categories', categoryRouter);
