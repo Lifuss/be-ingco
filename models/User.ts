@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Login is required'],
       unique: true,
     },
-    password: { type: String, required: true },
+    password: { type: String, default: null },
     role: {
       type: String,
       enum: ['user', 'admin'],
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Phone is required'],
     },
-    codeEDRPOU: {
+    edrpou: {
       type: String,
       required: [true, 'Code EDRPOU is required'],
     },

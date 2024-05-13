@@ -47,6 +47,17 @@ export const userSchema = Joi.object({
   token: Joi.string().default(null),
 });
 
+export const registerUserSchema = Joi.object({
+  email: Joi.string().email().required(),
+  isVerified: Joi.boolean().default(false),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  surName: Joi.string().required(),
+  phone: Joi.string().required(),
+  edrpou: Joi.string().required(),
+  about: Joi.string().allow('', null),
+});
+
 export const updateUserSchema = Joi.object({
   email: Joi.string().email(),
   login: Joi.string(),
