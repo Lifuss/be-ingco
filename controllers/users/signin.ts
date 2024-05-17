@@ -32,6 +32,7 @@ const signin = ctrlWrapper(async (req: Request, res: Response) => {
     token: updatedUser?.token,
     role: updatedUser?.role,
     isVerified: updatedUser?.isVerified,
+    favorites: updatedUser?.favorites,
   });
 });
 

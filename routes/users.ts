@@ -15,6 +15,7 @@ import signup from '../controllers/users/signup';
 import authentication from '../middlewares/authentication';
 import signout from '../controllers/users/signout';
 import refreshUser from '../controllers/users/refreshUser';
+import addFavorites from '../controllers/users/addFavorites';
 const router = Router();
 // TODO: Add route that allow admit edit user password
 
@@ -24,6 +25,7 @@ router.get('/refresh', authentication, refreshUser);
 router.post('/', authAdmin, validateBody(userSchema), createUser);
 router.post('/register', validateBody(registerUserSchema), signup);
 router.post('/login', validateBody(loginSchema), signin);
+router.post('/favorites/:productId', authentication, addFavorites);
 
 router.put('/:id', authAdmin, validateBody(updateUserSchema), updateUser);
 
