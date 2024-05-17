@@ -7,23 +7,40 @@ const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
     q = '',
     page = '1',
     limit = '10',
-  } = req.query as { q?: string; page?: string; limit?: string };
+    category = '',
+  } = req.query as {
+    q?: string;
+    page?: string;
+    limit?: string;
+    category?: string;
+    };
+  
+  console.log("category", category);
+  
 
-  const products = await Product.find({
+
+
+  let query = {
     $or: [
       { name: { $regex: q, $options: 'i' } },
       { article: { $regex: q, $options: 'i' } },
     ],
-  })
+  } as any;
+
+  if (category) {
+    query = {
+      $and: [{ category }, query],
+    };
+  }
+
+console.log("query", query);
+
+
+  const products = await Product.find(query)
     .skip((+page - 1) * +limit)
     .limit(+limit);
 
-  const total = await Product.countDocuments({
-    $or: [
-      { name: { $regex: q, $options: 'i' } },
-      { article: { $regex: q, $options: 'i' } },
-    ],
-  });
+  const total = await Product.countDocuments(query);
 
   const totalPages = Math.ceil(total / +limit);
 
