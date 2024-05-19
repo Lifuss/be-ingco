@@ -13,6 +13,7 @@ const refreshUser = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     role: user?.role,
     isVerified: user?.isVerified,
     token: user?.token,
+    favorites: user?.favorites,
   });
 });
 
