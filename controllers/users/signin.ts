@@ -33,6 +33,7 @@ const signin = ctrlWrapper(async (req: Request, res: Response) => {
     role: updatedUser?.role,
     isVerified: updatedUser?.isVerified,
     favorites: updatedUser?.favorites,
+    cart: updatedUser?.cart,
   });
 });
 

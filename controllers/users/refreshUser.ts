@@ -14,6 +14,7 @@ const refreshUser = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     isVerified: user?.isVerified,
     token: user?.token,
     favorites: user?.favorites,
+    cart: user?.cart,
   });
 });
 

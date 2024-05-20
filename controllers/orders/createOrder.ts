@@ -4,6 +4,7 @@ import { Response } from 'express';
 import getNextSequence from '../../utils/getNextSequence';
 import { CustomRequest, IUser } from '../../types/express';
 import User from '../../models/User';
+import Product from '../../models/Product';
 
 type orderProducts = {
   _id: string;
@@ -37,6 +38,12 @@ const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     user: { userId: _id, login: req.user?.login },
     totalPrice,
     isPaid: false,
+  });
+
+  products.forEach(async (product) => {
+    await Product.findByIdAndUpdate(product._id, {
+      $inc: { stock: -product.quantity },
+    });
   });
 
   await User.findByIdAndUpdate(_id, {
