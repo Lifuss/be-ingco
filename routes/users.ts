@@ -16,19 +16,26 @@ import authentication from '../middlewares/authentication';
 import signout from '../controllers/users/signout';
 import refreshUser from '../controllers/users/refreshUser';
 import addFavorites from '../controllers/users/addFavorites';
+import addProductToCart from '../controllers/users/cart/addProductToCart';
+import getCart from '../controllers/users/cart/getCart';
+import deleteProductFromCart from '../controllers/users/cart/deleteProductFromCart';
+
 const router = Router();
-// TODO: Add route that allow admit edit user password
+// TODO: Add route that allow admin edit user password
 
 router.get('/', authAdmin, getAllUsers);
 router.get('/refresh', authentication, refreshUser);
+router.get('/cart', authentication, getCart);
 
 router.post('/', authAdmin, validateBody(userSchema), createUser);
 router.post('/register', validateBody(registerUserSchema), signup);
 router.post('/login', validateBody(loginSchema), signin);
+router.post('/cart', authentication, addProductToCart);
 router.post('/favorites/:productId', authentication, addFavorites);
 
 router.put('/:id', authAdmin, validateBody(updateUserSchema), updateUser);
 
 router.delete('/logout', authentication, signout);
+router.delete('/cart', authentication, deleteProductFromCart);
 
 export default router;

@@ -16,7 +16,11 @@ export interface IUser {
   about?: string;
   address?: string;
   orders: mongoose.Types.ObjectId[];
-  cart: mongoose.Types.ObjectId[];
+  cart: {
+    productId: mongoose.Types.ObjectId;
+    quantity: number;
+    _id: mongoose.Types.ObjectId;
+  }[];
   favorites: mongoose.Types.ObjectId[];
   token?: string;
 }
