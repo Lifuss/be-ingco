@@ -1,8 +1,8 @@
 import { Response } from 'express';
-import ctrlWrapper from '../../utils/ctrlWrapper';
-import { CustomRequest, IUser } from '../../types/express';
-import requestError from '../../utils/requestError';
-import User from '../../models/User';
+import ctrlWrapper from '../../../utils/ctrlWrapper';
+import { CustomRequest, IUser } from '../../../types/express';
+import requestError from '../../../utils/requestError';
+import User from '../../../models/User';
 
 const addFavorites = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   const { productId } = req.params;

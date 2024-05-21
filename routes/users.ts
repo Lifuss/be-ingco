@@ -15,10 +15,11 @@ import signup from '../controllers/users/signup';
 import authentication from '../middlewares/authentication';
 import signout from '../controllers/users/signout';
 import refreshUser from '../controllers/users/refreshUser';
-import addFavorites from '../controllers/users/addFavorites';
+import addFavorites from '../controllers/users/favorites/addFavorites';
 import addProductToCart from '../controllers/users/cart/addProductToCart';
 import getCart from '../controllers/users/cart/getCart';
 import deleteProductFromCart from '../controllers/users/cart/deleteProductFromCart';
+import deleteFavorites from '../controllers/users/favorites/deleteFavorites';
 
 const router = Router();
 // TODO: Add route that allow admin edit user password
@@ -37,5 +38,6 @@ router.put('/:id', authAdmin, validateBody(updateUserSchema), updateUser);
 
 router.delete('/logout', authentication, signout);
 router.delete('/cart', authentication, deleteProductFromCart);
+router.delete('/favorites/:productId', authentication, deleteFavorites);
 
 export default router;
