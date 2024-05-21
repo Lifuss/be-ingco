@@ -23,9 +23,9 @@ const signin = ctrlWrapper(async (req: Request, res: Response) => {
     user._id,
     { token },
     { new: true },
-  ).select('-password');
-
-  console.log(updatedUser);
+  )
+    .select('-password')
+    .populate('cart.productId');
 
   res.json({
     login: updatedUser?.login,

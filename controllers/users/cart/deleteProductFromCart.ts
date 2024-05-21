@@ -14,7 +14,9 @@ const deleteProductFromCart = ctrlWrapper(
     if (
       cart.find(
         (item) =>
-          item.productId.toString() === productId && quantity < item.quantity,
+          item.productId.toString() === productId &&
+          quantity < item.quantity &&
+          item.quantity > 1,
       )
     ) {
       user = await User.findOneAndUpdate(
@@ -28,7 +30,7 @@ const deleteProductFromCart = ctrlWrapper(
           },
         },
         { new: true },
-      );
+      ).populate('cart.productId');
     } else {
       user = await User.findByIdAndUpdate(
         _id,
@@ -40,7 +42,7 @@ const deleteProductFromCart = ctrlWrapper(
           },
         },
         { new: true },
-      );
+      ).populate('cart.productId');
     }
 
     if (!user) {

@@ -27,7 +27,7 @@ const addProductToCart = ctrlWrapper(
           },
         },
         { new: true },
-      );
+      ).populate('cart.productId');
     } else {
       user = await User.findByIdAndUpdate(
         _id,
@@ -40,11 +40,12 @@ const addProductToCart = ctrlWrapper(
           },
         },
         { new: true },
-      );
+      ).populate('cart.productId');
     }
     if (!user) {
       throw requestError(500, 'Failed to add product to cart');
     }
+
     res.status(201).json({
       status: 'success',
       cart: user.cart,

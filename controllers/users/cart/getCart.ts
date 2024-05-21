@@ -10,6 +10,7 @@ const getCart = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   if (!user) {
     throw requestError(500, 'Failed to get cart');
   }
+
   res.status(200).json({
     status: 'success',
     cart: user.cart,
