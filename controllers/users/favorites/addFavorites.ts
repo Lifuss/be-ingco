@@ -15,7 +15,9 @@ const addFavorites = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     _id,
     { favorites: [...favorites, productId] },
     { new: true },
-  ).select('favorites');
+  )
+    .select('favorites')
+    .populate('favorites');
 
   res.json(updatedUser);
 });

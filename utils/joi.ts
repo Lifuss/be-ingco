@@ -85,7 +85,7 @@ export const loginSchema = Joi.object({
 export const createOrderSchema = Joi.object({
   products: Joi.array().items(
     Joi.object({
-      _id: Joi.string().required(),
+      productId: Joi.string().required(),
       quantity: Joi.number().required(),
       totalPriceByOneProduct: Joi.number().required(),
       price: Joi.number().required(),

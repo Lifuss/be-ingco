@@ -7,7 +7,7 @@ import User from '../../models/User';
 import Product from '../../models/Product';
 
 type orderProducts = {
-  _id: string;
+  productId: string;
   quantity: number;
   totalPriceByOneProduct: number;
   price: number;
@@ -25,12 +25,12 @@ const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   const { products, totalPrice } = req.body as orderBody;
   const { _id } = req.user as IUser;
 
-  const orderCode = await getNextSequence('orderCode');
+  const orderCode: number = await getNextSequence('orderCode');
   const order = await Order.create({
     orderCode,
     status: 'очікує підтвердження',
     products: products.map((product) => ({
-      product: product._id,
+      product: product.productId,
       quantity: product.quantity,
       price: product.price,
       totalPriceByOneProduct: product.totalPriceByOneProduct,
@@ -41,13 +41,14 @@ const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   });
 
   products.forEach(async (product) => {
-    await Product.findByIdAndUpdate(product._id, {
+    await Product.findByIdAndUpdate(product.productId, {
       $inc: { stock: -product.quantity },
     });
   });
 
   await User.findByIdAndUpdate(_id, {
     $push: { orders: order._id },
+    cart: [],
   });
   res.status(201).json(order);
 });
