@@ -1,18 +1,25 @@
 import Order from '../../models/Order';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import ctrlWrapper from '../../utils/ctrlWrapper';
+import { CustomRequest, IUser } from '../../types/express';
 
-const getAllOrders = ctrlWrapper(async (req: Request, res: Response) => {
+const getUserOrders = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   const {
     q = '',
     page = 1,
     limit = 15,
   } = req.query as { q?: string; page?: string; limit?: string };
+  const { _id } = req.user as IUser;
 
   const query = {
-    $or: [
-      { orderCode: new RegExp(q, 'i') },
-      { 'user.login': new RegExp(q, 'i') },
+    $and: [
+      { 'user.userId': _id },
+      {
+        $or: [
+          { orderCode: new RegExp(q, 'i') },
+          { declarationNumber: new RegExp(q, 'i') },
+        ],
+      },
     ],
   };
 
@@ -30,4 +37,4 @@ const getAllOrders = ctrlWrapper(async (req: Request, res: Response) => {
   res.status(200).json({ total, totalPages, orders });
 });
 
-export default getAllOrders;
+export default getUserOrders;

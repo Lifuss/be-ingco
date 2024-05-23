@@ -13,12 +13,7 @@ const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
     page?: string;
     limit?: string;
     category?: string;
-    };
-  
-  console.log("category", category);
-  
-
-
+  };
 
   let query = {
     $or: [
@@ -32,9 +27,6 @@ const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
       $and: [{ category }, query],
     };
   }
-
-console.log("query", query);
-
 
   const products = await Product.find(query)
     .skip((+page - 1) * +limit)

@@ -32,6 +32,7 @@ const orderSchema = new mongoose.Schema(
       },
     ],
     shippingAddress: { type: String },
+    declarationNumber: { type: String, default: '' },
     user: {
       userId: {
         type: mongoose.Schema.Types.ObjectId,
