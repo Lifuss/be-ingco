@@ -30,7 +30,8 @@ const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
 
   const products = await Product.find(query)
     .skip((+page - 1) * +limit)
-    .limit(+limit);
+    .limit(+limit)
+    .populate('category');
 
   const total = await Product.countDocuments(query);
 

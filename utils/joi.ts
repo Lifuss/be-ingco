@@ -20,7 +20,6 @@ export const updateProductSchema = Joi.object({
   priceBulk: Joi.number(),
   priceRetailRecommendation: Joi.number(),
   countInStock: Joi.number(),
-  imageUrl: Joi.string(),
   category: Joi.string().allow('', null),
 });
 

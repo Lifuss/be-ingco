@@ -5,12 +5,13 @@ import validateBody from '../middlewares/validateBody';
 import { categorySchema } from '../utils/joi';
 import updateCategory from '../controllers/categories/updateCategory';
 import deleteCategory from '../controllers/categories/deleteCategory';
+import authAdmin from '../middlewares/authAdmin';
 
 const router = Router();
 
 router.get('/', getAllCategories);
-router.post('/', validateBody(categorySchema), createCategory);
-router.put('/:id', validateBody(categorySchema), updateCategory);
-router.delete('/:id', deleteCategory);
+router.post('/', authAdmin, validateBody(categorySchema), createCategory);
+router.put('/:id', authAdmin, validateBody(categorySchema), updateCategory);
+router.delete('/:id', authAdmin, deleteCategory);
 
 export default router;

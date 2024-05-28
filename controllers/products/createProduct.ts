@@ -28,8 +28,6 @@ const createProduct = ctrlWrapper(async (req: Request, res: Response) => {
   rename(oldPath, newPath, function (err) {
     if (err) {
       console.error('Error moving file:', err);
-    } else {
-      console.log(`Successfully moved file ${image.filename} to public folder`);
     }
   });
 

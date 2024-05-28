@@ -7,21 +7,28 @@ import getById from '../controllers/products/getById';
 import updateProduct from '../controllers/products/updateProduct';
 import deleteProduct from '../controllers/products/deleteProduct';
 import upload from '../middlewares/upload';
+import authAdmin from '../middlewares/authAdmin';
 
 const router = Router();
-// TODO: Add upload middleware
 
 router.get('/', getAllProducts);
 
 router.post(
   '/',
+  authAdmin,
   upload.single('image'),
   validateBody(productSchema),
   createProduct,
 );
 
 router.get('/:id', getById);
-router.put('/:id', validateBody(updateProductSchema), updateProduct);
-router.delete('/:id', deleteProduct);
+router.put(
+  '/:id',
+  authAdmin,
+  upload.single('image'),
+  validateBody(updateProductSchema),
+  updateProduct,
+);
+router.delete('/:id', authAdmin, deleteProduct);
 
 export default router;

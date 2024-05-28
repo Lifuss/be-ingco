@@ -17,6 +17,7 @@ const getAllOrders = ctrlWrapper(async (req: Request, res: Response) => {
   };
 
   const orders = await Order.find(query)
+    .sort({ createdAt: -1 })
     .skip((+page - 1) * +limit)
     .limit(+limit)
     .populate(

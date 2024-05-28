@@ -15,7 +15,9 @@ const getAllUsers = ctrlWrapper(async (req: Request, res: Response) => {
         ],
       },
     ],
-  }).select('-password');
+  })
+    .sort({ updatedAt: -1 })
+    .select('-password');
 
   res.json(users);
 });

@@ -14,6 +14,10 @@ const createCategory = ctrlWrapper(async (req: Request, res: Response) => {
   }
 
   const category = await Category.create(req.body as TCategoryBody);
-  res.status(201).json(category);
+
+  res.status(201).json({
+    ...category.toObject(),
+    count: 0,
+  });
 });
 export default createCategory;
