@@ -29,7 +29,8 @@ const getUserOrders = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     .populate(
       'user.userId',
       '_id email role firstName lastName surName phone address codeEDRPOU',
-    );
+    )
+    .populate('products.product', 'name');
 
   const total = await Order.countDocuments(query);
   const totalPages = Math.ceil(total / +limit);

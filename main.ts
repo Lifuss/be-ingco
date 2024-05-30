@@ -38,7 +38,7 @@ app.use(cors());
 app.use('/static', staticFilesLogger);
 app.use(
   '/static',
-  express.static(path.join(__dirname, 'static'), {
+  express.static(path.resolve('static'), {
     maxAge: '1y',
     etag: true,
     lastModified: true,

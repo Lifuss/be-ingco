@@ -22,8 +22,9 @@ const createProduct = ctrlWrapper(async (req: Request, res: Response) => {
   if (!image) {
     throw new Error('Image is required');
   }
-  const oldPath = path.join(__dirname, '..', '..', 'tmp', image.filename);
-  const newPath = path.join(__dirname, '..', '..', 'static', image.filename);
+
+  const oldPath = path.resolve('tmp', image.filename);
+  const newPath = path.resolve('static', image.filename);
 
   rename(oldPath, newPath, function (err) {
     if (err) {
