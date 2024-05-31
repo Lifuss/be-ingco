@@ -13,7 +13,9 @@ const deleteFavorites = ctrlWrapper(
       _id,
       { $pull: { favorites: productId } },
       { new: true },
-    ).populate('favorites');
+    )
+      .select('favorites')
+      .populate('favorites');
 
     if (!updatedUser) {
       throw requestError(500, 'Error updating user');

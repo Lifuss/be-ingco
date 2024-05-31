@@ -19,7 +19,10 @@ const addFavorites = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     .select('favorites')
     .populate('favorites');
 
-  res.json(updatedUser);
+  if (!updatedUser) {
+    throw requestError(500, 'Error updating user');
+  }
+  res.json(updatedUser.favorites);
 });
 
 export default addFavorites;
