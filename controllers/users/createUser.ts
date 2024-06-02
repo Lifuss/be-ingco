@@ -15,6 +15,7 @@ const createUser = ctrlWrapper(async (req: Request, res: Response) => {
     throw requestError(409, 'User already exists');
   }
   const hashPassword = await bcrypt.hash(user.password, 5);
+  user.isVerified = true;
 
   const newUser = await User.create({ ...user, password: hashPassword });
   res.status(201).json(newUser);

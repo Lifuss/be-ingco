@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema(
     },
     edrpou: {
       type: String,
-      required: [true, 'Code EDRPOU is required'],
+      default: null,
     },
     about: {
       type: String,

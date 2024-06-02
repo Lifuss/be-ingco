@@ -37,7 +37,7 @@ export const userSchema = Joi.object({
   lastName: Joi.string().required(),
   surName: Joi.string().required(),
   phone: Joi.string().required(),
-  codeEDRPOU: Joi.string().required(),
+  edrpou: Joi.string().allow('', null),
   about: Joi.string().allow('', null),
   address: Joi.string().allow('', null),
   orders: Joi.array().items(Joi.string()),
