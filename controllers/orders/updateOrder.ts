@@ -14,13 +14,14 @@ type TUpdateOrderBody = {
     totalPriceByOneProduct: number;
   }[];
   totalPrice: number;
-  comment: string;
-  shippingAddress: string;
+  comment?: string;
+  shippingAddress?: string;
+  declarationNumber?: string;
 };
 
 const updateOrder = ctrlWrapper(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const updateData: Partial<TUpdateOrderBody> = req.body;
+  const updateData: TUpdateOrderBody = req.body;
 
   validateUpdateInput(id, updateData);
 
@@ -34,7 +35,12 @@ const updateOrder = ctrlWrapper(async (req: Request, res: Response) => {
 
   const order = await Order.findByIdAndUpdate(id, updateData, {
     new: true,
-  }).populate('products._id');
+  })
+    .populate(
+      'user.userId',
+      '_id email role firstName lastName surName phone address codeEDRPOU',
+    )
+    .populate('products.product', 'name');
 
   if (!order) {
     throw requestError(404, 'Order not found');

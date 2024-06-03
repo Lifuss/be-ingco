@@ -15,6 +15,6 @@ router.get('/all', authAdmin, getAllOrders);
 
 router.post('/', authentication, validateBody(createOrderSchema), createOrder);
 
-router.patch('/:id', authAdmin, validateBody(updateOrderSchema), updateOrder);
+router.put('/:id', authAdmin, validateBody(updateOrderSchema), updateOrder);
 
 export default router;
