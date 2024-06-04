@@ -17,7 +17,8 @@ const getAllUsers = ctrlWrapper(async (req: Request, res: Response) => {
     ],
   })
     .sort({ updatedAt: -1 })
-    .select('-password');
+    .select('-password')
+    .populate('orders', 'orderCode totalPrice status');
 
   res.json(users);
 });
