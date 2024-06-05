@@ -26,6 +26,7 @@ const getUserOrders = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   const orders = await Order.find(query)
     .skip((+page - 1) * +limit)
     .limit(+limit)
+    .sort({ createdAt: -1 })
     .populate(
       'user.userId',
       '_id email role firstName lastName surName phone address codeEDRPOU',
