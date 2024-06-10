@@ -66,6 +66,18 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    сartRetail: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Product',
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
     favorites: [
       {
         type: mongoose.Schema.Types.ObjectId,
