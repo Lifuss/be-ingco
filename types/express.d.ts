@@ -21,6 +21,11 @@ export interface IUser {
     quantity: number;
     _id: mongoose.Types.ObjectId;
   }[];
+  cartRetail: {
+    productId: mongoose.Types.ObjectId;
+    quantity: number;
+    _id: mongoose.Types.ObjectId;
+  }[];
   favorites: mongoose.Types.ObjectId[];
   token?: string;
 }

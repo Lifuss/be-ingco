@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-    сartRetail: [
+    cartRetail: [
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,

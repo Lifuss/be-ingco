@@ -2,7 +2,7 @@ import RetailOrder from '@/models/RetailOrder';
 import ctrlWrapper from '@/utils/ctrlWrapper';
 import { Response } from 'express';
 import getNextSequence from '@/utils/getNextSequence';
-import { CustomRequest, IUser } from '@/types/express';
+import { CustomRequest } from '@/types/express';
 import User from '@/models/User';
 import Product from '@/models/Product';
 import sendEmail from '@/utils/sendEmail';
@@ -40,7 +40,7 @@ const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   } = req.body as orderBody;
 
   const orderCode: number = await getNextSequence('orderCode');
-  const order = await Order.create({
+  const order = await RetailOrder.create({
     orderCode,
     status: 'очікує підтвердження',
     products: products.map((product) => ({
