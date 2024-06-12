@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm install && tsc",
     "start": "cross-env NODE_ENV=production node ./dist/server.js",
-    "start:dev": "cross-env NODE_ENV=development nodemon --exec ts-node ./server.ts",
+    "start:dev": "cross-env NODE_ENV=development nodemon --exec ts-node -r tsconfig-paths/register ./server.ts",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0"
   },
   "repository": {
@@ -51,6 +51,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^3.0.3",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
   }
 }

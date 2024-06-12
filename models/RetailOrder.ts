@@ -39,6 +39,10 @@ const orderSchema = new mongoose.Schema(
       firstName: { type: String, required: true },
       surName: { type: String, required: true },
       phone: { type: String, required: true },
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
     },
     totalPrice: { type: Number, required: true },
     payment: {

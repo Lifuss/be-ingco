@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { orderStatusEnum } from '../models/Order';
+import { token } from 'morgan';
 
 export const productSchema = Joi.object({
   name: Joi.string().required(),
@@ -94,6 +95,25 @@ export const createOrderSchema = Joi.object({
   shippingAddress: Joi.string().allow(''),
   totalPrice: Joi.number().required(),
   comment: Joi.string().allow(''),
+});
+export const createOrderRetailSchema = Joi.object({
+  products: Joi.array().items(
+    Joi.object({
+      productId: Joi.string().required(),
+      quantity: Joi.number().required(),
+      totalPriceByOneProduct: Joi.number().required(),
+      price: Joi.number().required(),
+    }),
+  ),
+  shippingAddress: Joi.string().allow(''),
+  totalPrice: Joi.number().required(),
+  comment: Joi.string().allow(''),
+  email: Joi.string().email().required(),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  surName: Joi.string().required(),
+  phone: Joi.string().required(),
+  token: Joi.string().allow(''),
 });
 
 export const updateOrderSchema = Joi.object({

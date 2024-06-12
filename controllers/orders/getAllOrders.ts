@@ -1,13 +1,20 @@
 import Order from '../../models/Order';
 import { Request, Response } from 'express';
 import ctrlWrapper from '../../utils/ctrlWrapper';
+import RetailOrder from '@/models/RetailOrder';
 
 const getAllOrders = ctrlWrapper(async (req: Request, res: Response) => {
   const {
     q = '',
     page = 1,
     limit = 15,
-  } = req.query as { q?: string; page?: string; limit?: string };
+    isRetail = 'false',
+  } = req.query as {
+    q?: string;
+    page?: string;
+    limit?: string;
+    isRetail?: 'false' | 'true';
+  };
 
   const query = {
     $or: [
@@ -15,18 +22,31 @@ const getAllOrders = ctrlWrapper(async (req: Request, res: Response) => {
       { 'user.login': new RegExp(q, 'i') },
     ],
   };
+  let orders;
+  let total;
 
-  const orders = await Order.find(query)
-    .sort({ createdAt: -1 })
-    .skip((+page - 1) * +limit)
-    .limit(+limit)
-    .populate(
-      'user.userId',
-      '_id email role firstName lastName surName phone address codeEDRPOU',
-    )
-    .populate('products.product', 'name');
+  console.debug('isRetail', isRetail);
 
-  const total = await Order.countDocuments(query);
+  if (isRetail === 'true') {
+    orders = await RetailOrder.find(query)
+      .sort({ createdAt: -1 })
+      .skip((+page - 1) * +limit)
+      .limit(+limit)
+      .populate('products.product', 'name');
+    total = await RetailOrder.countDocuments(query);
+  } else {
+    orders = await Order.find(query)
+      .sort({ createdAt: -1 })
+      .skip((+page - 1) * +limit)
+      .limit(+limit)
+      .populate(
+        'user.userId',
+        '_id email role firstName lastName surName phone address codeEDRPOU',
+      )
+      .populate('products.product', 'name');
+    total = await Order.countDocuments(query);
+  }
+
   const totalPages = Math.ceil(total / +limit);
 
   res.status(200).json({ total, totalPages, orders });

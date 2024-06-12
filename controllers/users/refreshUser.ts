@@ -8,6 +8,7 @@ const refreshUser = ctrlWrapper(async (req: CustomRequest, res: Response) => {
 
   const user = await User.findById(_id)
     .populate('cart.productId')
+    .populate('cartRetail.productId')
     .populate('favorites');
 
   res.status(200).json({
@@ -17,6 +18,12 @@ const refreshUser = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     token: user?.token,
     favorites: user?.favorites,
     cart: user?.cart,
+    cartRetail: user?.cartRetail,
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    email: user?.email,
+    phone: user?.phone,
+    surName: user?.surName,
   });
 });
 
