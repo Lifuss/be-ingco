@@ -1,13 +1,12 @@
 import Joi from 'joi';
 import { orderStatusEnum } from '../models/Order';
-import { token } from 'morgan';
 
 export const productSchema = Joi.object({
   name: Joi.string().required(),
   article: Joi.string().required(),
   description: Joi.string().required(),
   price: Joi.number().required(),
-  priceBulk: Joi.number().required(),
+  rrcSale: Joi.number().empty('').default(0),
   priceRetailRecommendation: Joi.number().required(),
   countInStock: Joi.number().required(),
   category: Joi.string(),
@@ -18,7 +17,7 @@ export const updateProductSchema = Joi.object({
   article: Joi.string(),
   description: Joi.string(),
   price: Joi.number(),
-  priceBulk: Joi.number(),
+  rrcSale: Joi.number().empty('').default(0),
   priceRetailRecommendation: Joi.number(),
   countInStock: Joi.number(),
   category: Joi.string().allow('', null),

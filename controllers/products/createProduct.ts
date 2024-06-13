@@ -10,6 +10,7 @@ export type TProductBody = {
   price: number;
   priceBulk: number;
   priceRetailRecommendation: number;
+  rrcSale: number;
   description: string;
   image: string;
   countInStock: number;

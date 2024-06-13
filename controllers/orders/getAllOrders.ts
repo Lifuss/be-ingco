@@ -41,7 +41,7 @@ const getAllOrders = ctrlWrapper(async (req: Request, res: Response) => {
       .limit(+limit)
       .populate(
         'user.userId',
-        '_id email role firstName lastName surName phone address codeEDRPOU',
+        '_id email role firstName lastName surName phone address edrpou',
       )
       .populate('products.product', 'name');
     total = await Order.countDocuments(query);

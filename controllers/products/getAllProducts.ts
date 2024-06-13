@@ -20,7 +20,7 @@ const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
       { name: { $regex: q, $options: 'i' } },
       { article: { $regex: q, $options: 'i' } },
     ],
-  } as any;
+  } as Record<string, unknown>;
 
   if (category) {
     query = {
