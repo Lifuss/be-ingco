@@ -1,7 +1,7 @@
 import Order from '../../models/Order';
 import { Request, Response } from 'express';
 import ctrlWrapper from '../../utils/ctrlWrapper';
-import RetailOrder from '@/models/RetailOrder';
+import RetailOrder from '../../models/RetailOrder';
 
 const getAllOrders = ctrlWrapper(async (req: Request, res: Response) => {
   const {

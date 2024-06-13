@@ -11,7 +11,7 @@ import authAdmin from '../middlewares/authAdmin';
 import getAllOrders from '../controllers/orders/getAllOrders';
 import updateOrder from '../controllers/orders/updateOrder';
 import getUserOrders from '../controllers/orders/getUserOrders';
-import createOrderRetail from '@/controllers/orders/retail/createOrderRetail';
+import createOrderRetail from '../controllers/orders/retail/createOrderRetail';
 
 const router = Router();
 

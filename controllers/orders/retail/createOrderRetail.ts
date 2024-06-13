@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
-import RetailOrder from '@/models/RetailOrder';
-import ctrlWrapper from '@/utils/ctrlWrapper';
+import RetailOrder from '../../../models/RetailOrder';
+import ctrlWrapper from '../../../utils/ctrlWrapper';
 import { Response } from 'express';
-import getNextSequence from '@/utils/getNextSequence';
-import { CustomRequest, IUser } from '@/types/express';
-import User from '@/models/User';
-import Product from '@/models/Product';
-import sendEmail from '@/utils/sendEmail';
+import getNextSequence from '../../../utils/getNextSequence';
+import { CustomRequest, IUser } from '../../../types/express';
+import User from '../../../models/User';
+import Product from '../../../models/Product';
+import sendEmail from '../../../utils/sendEmail';
 
 type orderProducts = {
   productId: string;

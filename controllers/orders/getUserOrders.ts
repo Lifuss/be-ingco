@@ -2,7 +2,7 @@ import Order from '../../models/Order';
 import { Response } from 'express';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 import { CustomRequest, IUser } from '../../types/express';
-import RetailOrder from '@/models/RetailOrder';
+import RetailOrder from '../../models/RetailOrder';
 
 const getUserOrders = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   const {
