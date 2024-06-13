@@ -42,6 +42,7 @@ export const userSchema = Joi.object({
   address: Joi.string().allow('', null),
   orders: Joi.array().items(Joi.string()),
   cart: Joi.array().items(Joi.string()),
+  cartRetail: Joi.array().items(Joi.string()),
   favorites: Joi.array().items(Joi.string()),
   token: Joi.string().default(null),
 });
@@ -72,6 +73,7 @@ export const updateUserSchema = Joi.object({
   address: Joi.string().allow('', null),
   orders: Joi.array().items(Joi.object()),
   cart: Joi.array().items(Joi.object()),
+  cartRetail: Joi.array().items(Joi.object()),
   favorites: Joi.array().items(Joi.string()),
   token: Joi.string(),
   _id: Joi.string(),
