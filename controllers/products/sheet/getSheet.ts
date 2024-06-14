@@ -1,5 +1,5 @@
-import ctrlWrapper from '@/utils/ctrlWrapper';
-import { createExcel } from '@/utils/excel';
+import ctrlWrapper from '../../../utils/ctrlWrapper';
+import { createExcel } from '../../../utils/excel';
 import { Request, Response } from 'express';
 import path from 'path';
 
