@@ -9,6 +9,7 @@ const productSchema = new mongoose.Schema(
     priceBulk: { type: Number },
     priceRetailRecommendation: { type: Number, required: true },
     rrcSale: { type: Number, default: 0 },
+    enterPrice: { type: Number, default: 0 },
     countInStock: { type: Number, required: true },
     image: { type: String, required: true },
     category: {

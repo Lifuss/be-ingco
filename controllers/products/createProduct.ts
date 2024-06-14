@@ -11,6 +11,7 @@ export type TProductBody = {
   priceBulk: number;
   priceRetailRecommendation: number;
   rrcSale: number;
+  enterPrice: number;
   description: string;
   image: string;
   countInStock: number;
