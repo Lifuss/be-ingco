@@ -8,10 +8,14 @@ import updateProduct from '../controllers/products/updateProduct';
 import deleteProduct from '../controllers/products/deleteProduct';
 import upload from '../middlewares/upload';
 import authAdmin from '../middlewares/authAdmin';
+import authentication from '@/middlewares/authentication';
+import getSheet from '@/controllers/products/sheet/getSheet';
 
 const router = Router();
 
 router.get('/', getAllProducts);
+router.get('/sheets', authentication, getSheet);
+router.get('/:id', getById);
 
 router.post(
   '/',
@@ -21,7 +25,6 @@ router.post(
   createProduct,
 );
 
-router.get('/:id', getById);
 router.put(
   '/:id',
   authAdmin,
