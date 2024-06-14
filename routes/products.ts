@@ -8,8 +8,8 @@ import updateProduct from '../controllers/products/updateProduct';
 import deleteProduct from '../controllers/products/deleteProduct';
 import upload from '../middlewares/upload';
 import authAdmin from '../middlewares/authAdmin';
-import authentication from '@/middlewares/authentication';
-import getSheet from '@/controllers/products/sheet/getSheet';
+import authentication from '../middlewares/authentication';
+import getSheet from '../controllers/products/sheet/getSheet';
 
 const router = Router();
 
