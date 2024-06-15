@@ -1,9 +1,12 @@
 import ExcelJS from 'exceljs';
 import path from 'path';
+import Product from '@/models/Product';
 
-const pathToFile = path.resolve('static', 'sheets', 'products.xlsx');
+function createPath(fileName: string) {
+  return path.resolve('static', 'sheets', fileName);
+}
 
-const exportProductColumns = [
+const exportProductColumnsPromUa = [
   { header: 'Код_Товару', key: 'code' },
   { header: 'Назва_Позиції', key: 'name' },
   { header: 'Назва_Позиції_укр', key: 'nameUkr' },
@@ -55,16 +58,78 @@ const exportProductColumns = [
   { header: 'Де_знаходиться_товар', key: 'productLocation' },
 ];
 
-export const createExcel = async (): Promise<void> => {
-  const data = [
-    { name: 'John Doe test test', age: 30 },
-    { name: 'Jane Doe vay \n vau', age: 25 },
-  ];
+export const createExcelPromUa = async (): Promise<void> => {
+  // const data = [
+  //   { name: 'John Doe test test', age: 30 },
+  //   { name: 'Jane Doe vay \n vau', age: 25 },
+  // ];
+  const data = (await Product.find().lean()).map((product) => {
+    const htmlDescription =
+      (product.description &&
+        product.description
+          .split('\n')
+          .map((line) => `<p>${line}</p>`)
+          .join('')) ||
+      '<p>Опис відсутній</p>';
+    const searchQueries = product.name.split(' ').join(', ');
+
+    return {
+      code: product.article,
+      name: product.name,
+      nameUkr: product.name,
+      searchQueries,
+      searchQueriesUkr: searchQueries,
+      // description: product.description,
+      // descriptionUkr: product.description,
+      productType: 'Товар',
+      price: product.priceRetailRecommendation,
+      currency: 'UAH',
+      unit: 'шт.',
+      minOrderAmount: 1,
+      // wholesalePrice: product.price,
+      // minWholesaleOrder: 1,
+      imageLink: 'https://be-ingco.store' + product.image,
+      availability: 'в наявності',
+      amount: product.countInStock,
+      groupNumber: 1,
+      groupName: 'Товари',
+      // subdivisionLink: 'https://prom.ua/ua/p' + product._id,
+      deliveryPossibility: 'Так',
+      // deliveryTime: '2-3 дні',
+      // packagingMethod: 'Пакет',
+      // packagingMethodUkr: 'Пакет',
+      uniqueIdentifier: product._id,
+      productId: product.article,
+      // subdivisionId: product._id,
+      groupId: 1,
+      manufacturer: 'INGCO',
+      manufacturerCountry: 'Китай',
+      discount: 0,
+      variationGroupId: 1,
+      personalNotes: '',
+      productOnSite: 'Так',
+      discountStartDate: '',
+      discountEndDate: '',
+      priceFrom: '',
+      tag: '',
+      htmlTitle: '<h1>' + product.name + '</h1>',
+      htmlTitleUkr: '<h1>' + product.name + '</h1>',
+      htmlDescription,
+      htmlDescriptionUkr: htmlDescription,
+      gtinCode: '',
+      mpnNumber: '',
+      weight: 0.5,
+      width: 10,
+      height: 10,
+      length: 10,
+      productLocation: 'Чернівці',
+    };
+  });
 
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Sheet 1');
-  worksheet.columns = exportProductColumns;
+  worksheet.columns = exportProductColumnsPromUa;
   worksheet.addRows(data);
 
-  await workbook.xlsx.writeFile(pathToFile);
+  await workbook.xlsx.writeFile(createPath('productsProm.xlsx'));
 };
