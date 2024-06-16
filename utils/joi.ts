@@ -4,13 +4,21 @@ import { orderStatusEnum } from '../models/Order';
 export const productSchema = Joi.object({
   name: Joi.string().required(),
   article: Joi.string().required(),
-  description: Joi.string().required(),
-  price: Joi.number().required(),
-  rrcSale: Joi.number().empty('').default(0),
+  description: Joi.string().allow('', null),
   enterPrice: Joi.number().allow('', null),
+  price: Joi.number().required(),
   priceRetailRecommendation: Joi.number().required(),
+  rrcSale: Joi.number().empty('').default(0),
+  warranty: Joi.number(),
+  seoKeywords: Joi.string().allow('', null),
   countInStock: Joi.number().required(),
   category: Joi.string(),
+  characteristics: Joi.array().items(
+    Joi.object({
+      name: Joi.string().required(),
+      value: Joi.string().required(),
+    }),
+  ),
 });
 
 export const updateProductSchema = Joi.object({
@@ -23,6 +31,14 @@ export const updateProductSchema = Joi.object({
   priceRetailRecommendation: Joi.number(),
   countInStock: Joi.number(),
   category: Joi.string().allow('', null),
+  characteristics: Joi.array().items(
+    Joi.object({
+      name: Joi.string().required(),
+      value: Joi.string().required(),
+    }),
+  ),
+  warranty: Joi.number(),
+  seoKeywords: Joi.string().allow('', null),
 });
 
 export const categorySchema = Joi.object({

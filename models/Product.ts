@@ -5,6 +5,14 @@ const productSchema = new mongoose.Schema(
     name: { type: String, required: true },
     article: { type: String, required: true },
     description: { type: String },
+    characteristics: [
+      {
+        name: { type: String, required: true },
+        value: { type: String, required: true },
+      },
+    ],
+    warranty: { type: Number },
+    seoKeywords: { type: String },
     price: { type: Number, required: true },
     priceBulk: { type: Number },
     priceRetailRecommendation: { type: Number, required: true },

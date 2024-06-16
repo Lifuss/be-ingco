@@ -36,3 +36,19 @@ export interface CustomRequest extends Request {
     authorization?: string;
   };
 }
+
+export interface IProduct {
+  _id: string;
+  name: string;
+  article: string;
+  description: string;
+  price: number;
+  priceBulk?: number;
+  priceRetailRecommendation: number;
+  countInStock: number;
+  image: string;
+  category: { $oid: string };
+  createdAt: { $date: string };
+  updatedAt: { $date: string };
+  rrcSale: number;
+}

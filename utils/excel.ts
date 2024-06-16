@@ -1,7 +1,6 @@
 import ExcelJS from 'exceljs';
 import path from 'path';
-import Product from '@/models/Product';
-
+import Product from '../models/Product';
 function createPath(fileName: string) {
   return path.resolve('static', 'sheets', fileName);
 }

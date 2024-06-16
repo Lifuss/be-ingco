@@ -11,9 +11,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/*": ["./*"]
-    },
     "baseUrl": "."
   },
   "include": ["**/*.ts", "**/*.json", "./types/*.d.ts", ".eslintrc.js"]
