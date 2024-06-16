@@ -25,6 +25,7 @@ import {
   addProductToRetailCart,
   deleteProductFromRetailCart,
 } from '../controllers/users/cart/retail';
+import deleteUser from '../controllers/users/deleteUser';
 
 const router = Router();
 // TODO: Add route that allow admin edit user password
@@ -47,5 +48,6 @@ router.delete('/logout', authentication, signout);
 router.delete('/cart', authentication, deleteProductFromCart);
 router.delete('/cart/retail', authentication, deleteProductFromRetailCart);
 router.delete('/favorites/:productId', authentication, deleteFavorites);
+router.delete('/:id', authAdmin, deleteUser);
 
 export default router;
