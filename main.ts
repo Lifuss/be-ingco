@@ -30,8 +30,7 @@ const staticFilesLogger = morgan(function (tokens, req, res) {
   ].join(' ');
 });
 
-// Logger for route handlers
-const routeHandlersLogger = morgan('dev');
+const format = process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
 
 app.use(cors());
 
@@ -47,7 +46,7 @@ app.use(
 
 app.use(express.json());
 
-app.use(routeHandlersLogger);
+app.use(morgan(format));
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/categories', categoryRouter);

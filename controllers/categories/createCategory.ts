@@ -5,12 +5,13 @@ import requestError from '../../utils/requestError';
 
 export type TCategoryBody = {
   name: string;
+  renderSort: number;
 };
 
 const createCategory = ctrlWrapper(async (req: Request, res: Response) => {
   const checkCategory = await Category.findOne({ name: req.body.name });
   if (checkCategory) {
-    throw requestError(400, 'Category already exists');
+    throw requestError(409, 'Category already exists');
   }
 
   const category = await Category.create(req.body as TCategoryBody);

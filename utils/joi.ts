@@ -43,6 +43,7 @@ export const updateProductSchema = Joi.object({
 
 export const categorySchema = Joi.object({
   name: Joi.string().required(),
+  renderSort: Joi.number().required(),
 });
 
 export const userSchema = Joi.object({

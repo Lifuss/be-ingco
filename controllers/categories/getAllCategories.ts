@@ -12,15 +12,20 @@ const getAllCategories = ctrlWrapper(async (req: Request, res: Response) => {
     {
       name: { $regex: q, $options: 'i' },
     },
-    'name _id',
-  );
+    'name renderSort _id',
+  ).sort({ renderSort: 1 });
 
   const countProductWithinCategory = await Promise.all(
     categories.map(async (categoryItem) => {
       const count = await Product.countDocuments({
         category: categoryItem._id,
       });
-      return { ...categoryItem.toObject(), count };
+      return {
+        _id: categoryItem._id,
+        name: categoryItem.name,
+        count,
+        renderSort: categoryItem.renderSort,
+      };
     }),
   );
 

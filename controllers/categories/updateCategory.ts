@@ -3,18 +3,25 @@ import ctrlWrapper from '../../utils/ctrlWrapper';
 import Category from '../../models/Category';
 import requestError from '../../utils/requestError';
 import validateUpdateInput from '../../utils/validateUpdateInput';
+import { TCategoryBody } from './createCategory';
 
 const updateCategory = ctrlWrapper(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name, renderSort } = req.body as TCategoryBody;
 
-  validateUpdateInput(id, { name });
+  validateUpdateInput(id, req.body);
 
-  const category = await Category.findByIdAndUpdate(
-    id,
-    { name },
-    { new: true },
-  );
+  const checkCategory = await Category.findOne({
+    name: name,
+    _id: { $ne: id },
+  });
+  if (checkCategory) {
+    throw requestError(409, 'Category already exists');
+  }
+
+  const category = await Category.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
   if (!category) {
     throw requestError(404, 'Category not found');
   }
