@@ -1,8 +1,14 @@
 import ExcelJS from 'exceljs';
 import path from 'path';
 import Product from '../models/Product';
+import sharp from 'sharp';
+
 function createPath(fileName: string) {
   return path.resolve('static', 'sheets', fileName);
+}
+
+async function convertWebpToPng(sourcePath: string): Promise<Buffer> {
+  return sharp(sourcePath).toFormat('png').toBuffer();
 }
 
 const exportProductColumnsPromUa = [
@@ -58,19 +64,19 @@ const exportProductColumnsPromUa = [
 ];
 
 export const createExcelPromUa = async (): Promise<void> => {
-  // const data = [
-  //   { name: 'John Doe test test', age: 30 },
-  //   { name: 'Jane Doe vay \n vau', age: 25 },
-  // ];
-  const data = (await Product.find().lean()).map((product) => {
-    const htmlDescription =
-      (product.description &&
-        product.description
-          .split('\n')
-          .map((line) => `<p>${line}</p>`)
-          .join('')) ||
-      '<p>Опис відсутній</p>';
-    const searchQueries = product.name.split(' ').join(', ');
+  const products = await Product.find();
+  const data = products.map((product) => {
+    const htmlDescription = product.characteristics
+      .map((char) =>
+        char.value !== '-'
+          ? `<p><strong>${char.name}</strong>: ${char.value}</p>`
+          : `<p><strong>${char.name}</strong></p>`,
+      )
+      .join('');
+
+    const searchQueries = product.seoKeywords
+      ? product.seoKeywords
+      : product.name.split(' ').join(', ');
 
     return {
       code: product.article,
@@ -78,8 +84,8 @@ export const createExcelPromUa = async (): Promise<void> => {
       nameUkr: product.name,
       searchQueries,
       searchQueriesUkr: searchQueries,
-      // description: product.description,
-      // descriptionUkr: product.description,
+      description: product.description,
+      descriptionUkr: product.description,
       productType: 'Товар',
       price: product.priceRetailRecommendation,
       currency: 'UAH',
@@ -117,10 +123,10 @@ export const createExcelPromUa = async (): Promise<void> => {
       htmlDescriptionUkr: htmlDescription,
       gtinCode: '',
       mpnNumber: '',
-      weight: 0.5,
-      width: 10,
-      height: 10,
-      length: 10,
+      // weight: 0.5,
+      // width: 10,
+      // height: 10,
+      // length: 10,
       productLocation: 'Чернівці',
     };
   });
@@ -131,4 +137,116 @@ export const createExcelPromUa = async (): Promise<void> => {
   worksheet.addRows(data);
 
   await workbook.xlsx.writeFile(createPath('productsProm.xlsx'));
+};
+
+const exportProductColumnsPrice = [
+  {
+    header: 'Код_Товару',
+    key: 'code',
+  },
+  {
+    header: 'Назва_Позиції',
+    key: 'name',
+  },
+  {
+    header: 'Опис',
+    key: 'description',
+  },
+  {
+    header: 'Ціна',
+    key: 'price',
+  },
+  {
+    header: 'Валюта',
+    key: 'currency',
+  },
+  {
+    header: 'РРЦ',
+    key: 'priceRetailRecommendation',
+  },
+  {
+    header: 'Валюта РРЦ',
+    key: 'currencyRetailRecommendation',
+  },
+  {
+    header: 'Наявність',
+    key: 'availability',
+  },
+  {
+    header: 'Кількість',
+    key: 'amount',
+  },
+];
+
+export const createExcelPrice = async (): Promise<void> => {
+  const products = await Product.find();
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Прайс ІнкоУкр');
+  worksheet.columns = exportProductColumnsPrice;
+
+  const imageColumnIndex = 9; // Індекс колонки для зображень (починаючи з 0)
+  let rowIndex = 2; // Початковий індекс рядка для даних (1 - заголовок)
+
+  for (const product of products) {
+    const rowValues = {
+      code: product.article,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      currency: 'USD',
+      priceRetailRecommendation: product.priceRetailRecommendation,
+      currencyRetailRecommendation: 'UAH',
+      availability: 'в наявності',
+      amount: product.countInStock,
+    };
+
+    worksheet.addRow(rowValues);
+
+    const columnKey = 'name'; // Ключ колонки, для якої ви хочете встановити ширину
+    let maxWidth = 10; // Мінімальна ширина колонки
+
+    worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+      const cellValue = row.getCell(columnKey).value;
+      const cellValueString = cellValue ? cellValue.toString() : '';
+      maxWidth = Math.max(maxWidth, cellValueString.length);
+    });
+
+    const currentRow = worksheet.getRow(rowIndex);
+    currentRow.height = 65;
+    currentRow.alignment = {
+      vertical: 'middle',
+      horizontal: 'center',
+      wrapText: true,
+    };
+
+    worksheet.getColumn(columnKey).width = maxWidth / 2;
+    worksheet.getColumn('description').width = maxWidth / 3;
+    worksheet.getColumn('description').alignment = {
+      vertical: 'justify' as const,
+    };
+    worksheet.getColumn('availability').width = 10;
+    if (product.image) {
+      // const imagePath = path.join(__dirname, product.image); // Шлях до зображення webp
+
+      const imagePath = path.resolve(
+        'static',
+        product.image.split('static/')[1],
+      ); // Шлях до зображення webp
+      const imageBuffer = await convertWebpToPng(imagePath); // Конвертація зображення
+      const imageId = workbook.addImage({
+        buffer: imageBuffer,
+        extension: 'png',
+      });
+
+      worksheet.addImage(imageId, {
+        tl: { col: imageColumnIndex, row: rowIndex - 1 },
+        ext: { width: 75, height: 75 },
+      });
+    }
+
+    rowIndex++;
+  }
+
+  await workbook.xlsx.writeFile(createPath('productsPrice.xlsx'));
 };

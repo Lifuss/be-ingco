@@ -60,6 +60,8 @@ app.use((req: Request, res: Response) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: RequestError, req: Request, res: Response, _: NextFunction) => {
   const { status = 500, message = 'Server error' } = err;
+  // треба залогувати помилку
+  console.log(err.message);
   res.status(status).json({ message });
 });
 
