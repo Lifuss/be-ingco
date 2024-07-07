@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isB2B: {
+      type: Boolean,
+      default: false,
+    },
     firstName: {
       type: String,
       required: [true, 'First name is required'],
@@ -44,9 +48,11 @@ const userSchema = new mongoose.Schema(
     },
     about: {
       type: String,
+      default: null,
     },
     address: {
       type: String,
+      default: null,
     },
     orders: [
       {

@@ -16,19 +16,32 @@ const getUserOrders = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     limit?: string;
     isRetail?: 'false' | 'true';
   };
-  const { _id } = req.user as IUser;
+  const { _id, email } = req.user as IUser;
 
-  const query = {
-    $and: [
-      { 'user.userId': _id },
-      {
-        $or: [
-          { orderCode: new RegExp(q, 'i') },
-          { declarationNumber: new RegExp(q, 'i') },
-        ],
-      },
-    ],
-  };
+  const query =
+    isRetail === 'false'
+      ? {
+          $and: [
+            { 'user.userId': _id },
+            {
+              $or: [
+                { orderCode: new RegExp(q, 'i') },
+                { declarationNumber: new RegExp(q, 'i') },
+              ],
+            },
+          ],
+        }
+      : {
+          $and: [
+            { 'user.email': email },
+            {
+              $or: [
+                { orderCode: new RegExp(q, 'i') },
+                { declarationNumber: new RegExp(q, 'i') },
+              ],
+            },
+          ],
+        };
   let orders;
   let total;
 

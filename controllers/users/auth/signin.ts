@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
-import User from '../../models/User';
-import requestError from '../../utils/requestError';
+import User from '../../../models/User';
+import requestError from '../../../utils/requestError';
 import jwt from 'jsonwebtoken';
-import ctrlWrapper from '../../utils/ctrlWrapper';
+import ctrlWrapper from '../../../utils/ctrlWrapper';
 
 const signin = ctrlWrapper(async (req: Request, res: Response) => {
   const { login, password } = req.body;
@@ -30,11 +30,17 @@ const signin = ctrlWrapper(async (req: Request, res: Response) => {
 
   res.json({
     login: updatedUser?.login,
-    token: updatedUser?.token,
     role: updatedUser?.role,
     isVerified: updatedUser?.isVerified,
+    isB2B: updatedUser?.isB2B,
+    token: updatedUser?.token,
     favorites: updatedUser?.favorites,
     cart: updatedUser?.cart,
+    cartRetail: updatedUser?.cartRetail,
+    firstName: updatedUser?.firstName,
+    lastName: updatedUser?.lastName,
+    email: updatedUser?.email,
+    phone: updatedUser?.phone,
   });
 });
 

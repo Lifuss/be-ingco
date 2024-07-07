@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import User from '../../models/User';
-import ctrlWrapper from '../../utils/ctrlWrapper';
-import { CustomRequest, IUser } from '../../types/express';
+import User from '../../../models/User';
+import ctrlWrapper from '../../../utils/ctrlWrapper';
+import { CustomRequest, IUser } from '../../../types/express';
 
 const refreshUser = ctrlWrapper(async (req: CustomRequest, res: Response) => {
   const { _id } = req.user as IUser;
@@ -15,6 +15,7 @@ const refreshUser = ctrlWrapper(async (req: CustomRequest, res: Response) => {
     login: user?.login,
     role: user?.role,
     isVerified: user?.isVerified,
+    isB2B: user?.isB2B,
     token: user?.token,
     favorites: user?.favorites,
     cart: user?.cart,

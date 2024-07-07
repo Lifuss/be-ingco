@@ -3,18 +3,19 @@ import validateBody from '../middlewares/validateBody';
 import authAdmin from '../middlewares/authAdmin';
 import {
   loginSchema,
+  registerUserClientSchema,
   registerUserSchema,
   updateUserSchema,
   userSchema,
 } from '../utils/joi';
 import createUser from '../controllers/users/createUser';
-import signin from '../controllers/users/signin';
+import signin from '../controllers/users/auth/signin';
 import getAllUsers from '../controllers/users/getAllUsers';
 import updateUser from '../controllers/users/updateUser';
-import signup from '../controllers/users/signup';
+import signup from '../controllers/users/auth/signup';
 import authentication from '../middlewares/authentication';
-import signout from '../controllers/users/signout';
-import refreshUser from '../controllers/users/refreshUser';
+import signout from '../controllers/users/auth/signout';
+import refreshUser from '../controllers/users/auth/refreshUser';
 import addFavorites from '../controllers/users/favorites/addFavorites';
 import addProductToCart from '../controllers/users/cart/addProductToCart';
 import getCart from '../controllers/users/cart/getCart';
@@ -26,6 +27,7 @@ import {
   deleteProductFromRetailCart,
 } from '../controllers/users/cart/retail';
 import deleteUser from '../controllers/users/deleteUser';
+import clientSignup from '../controllers/users/auth/clientSignup';
 
 const router = Router();
 // TODO: Add route that allow admin edit user password
@@ -37,6 +39,11 @@ router.get('/cart/retail', authentication, getRetailCart);
 
 router.post('/', authAdmin, validateBody(userSchema), createUser);
 router.post('/register', validateBody(registerUserSchema), signup);
+router.post(
+  '/register/client',
+  validateBody(registerUserClientSchema),
+  clientSignup,
+);
 router.post('/login', validateBody(loginSchema), signin);
 router.post('/cart', authentication, addProductToCart);
 router.post('/cart/retail', authentication, addProductToRetailCart);
