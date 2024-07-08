@@ -17,7 +17,7 @@ export const productSchema = Joi.object({
     Joi.object({
       name: Joi.string().required(),
       value: Joi.string().required(),
-    })
+    }),
   ),
 });
 
@@ -35,7 +35,7 @@ export const updateProductSchema = Joi.object({
     Joi.object({
       name: Joi.string().required(),
       value: Joi.string().required(),
-    })
+    }),
   ),
   warranty: Joi.number(),
   seoKeywords: Joi.string().allow('', null),
@@ -52,6 +52,7 @@ export const userSchema = Joi.object({
   password: Joi.string().required(),
   role: Joi.string().valid('user', 'admin').default('user'),
   isVerified: Joi.boolean().default(false),
+  isB2B: Joi.boolean().default(true),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
   surName: Joi.string().required(),
@@ -92,6 +93,7 @@ export const updateUserSchema = Joi.object({
   password: Joi.string(),
   role: Joi.string().valid('user', 'admin'),
   isVerified: Joi.boolean(),
+  isB2B: Joi.boolean(),
   firstName: Joi.string(),
   lastName: Joi.string(),
   surName: Joi.string(),
@@ -119,7 +121,7 @@ export const createOrderSchema = Joi.object({
       quantity: Joi.number().required(),
       totalPriceByOneProduct: Joi.number().required(),
       price: Joi.number().required(),
-    })
+    }),
   ),
   shippingAddress: Joi.string().allow(''),
   totalPrice: Joi.number().required(),
@@ -132,7 +134,7 @@ export const createOrderRetailSchema = Joi.object({
       quantity: Joi.number().required(),
       totalPriceByOneProduct: Joi.number().required(),
       price: Joi.number().required(),
-    })
+    }),
   ),
   shippingAddress: Joi.string().allow(''),
   totalPrice: Joi.number().required(),
@@ -157,7 +159,7 @@ export const updateOrderSchema = Joi.object({
         quantity: Joi.number().required(),
         totalPriceByOneProduct: Joi.number().required(),
         price: Joi.number().required(),
-      })
+      }),
     )
     .optional(),
   totalPrice: Joi.number().optional(),
