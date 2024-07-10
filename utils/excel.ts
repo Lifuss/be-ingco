@@ -8,7 +8,14 @@ function createPath(fileName: string) {
 }
 
 async function convertWebpToPng(sourcePath: string): Promise<Buffer> {
-  return sharp(sourcePath).toFormat('png').toBuffer();
+  return sharp(sourcePath)
+    .toFormat('png')
+    .png({
+      quality: 80,
+      compressionLevel: 6,
+      progressive: true,
+    })
+    .toBuffer();
 }
 
 const exportProductColumnsPromUa = [
@@ -182,7 +189,7 @@ export const createExcelPrice = async (): Promise<void> => {
   const products = await Product.find();
 
   const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet('Прайс ІнкоУкр');
+  const worksheet = workbook.addWorksheet('Прайс ingco ua');
   worksheet.columns = exportProductColumnsPrice;
 
   const imageColumnIndex = 9; // Індекс колонки для зображень (починаючи з 0)
@@ -206,7 +213,7 @@ export const createExcelPrice = async (): Promise<void> => {
     const columnKey = 'name'; // Ключ колонки, для якої ви хочете встановити ширину
     let maxWidth = 10; // Мінімальна ширина колонки
 
-    worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+    worksheet.eachRow({ includeEmpty: true }, (row) => {
       const cellValue = row.getCell(columnKey).value;
       const cellValueString = cellValue ? cellValue.toString() : '';
       maxWidth = Math.max(maxWidth, cellValueString.length);
@@ -248,5 +255,9 @@ export const createExcelPrice = async (): Promise<void> => {
     rowIndex++;
   }
 
-  await workbook.xlsx.writeFile(createPath('productsPrice.xlsx'));
+  try {
+    await workbook.xlsx.writeFile(createPath('productsPrice.xlsx'));
+  } catch (error) {
+    console.error('Error writing the file:', error);
+  }
 };

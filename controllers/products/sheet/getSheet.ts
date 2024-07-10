@@ -27,14 +27,14 @@ const getSheet = ctrlWrapper(async (req: Request, res: Response) => {
       );
       break;
     case 'price':
-      const filePath = path.resolve('static', 'sheets', 'productsPrice.xlsx');
       try {
+        const filePath = path.resolve('static', 'sheets', 'productsPrice.xlsx');
         const stats = await fs.stat(filePath);
         const lastModified = new Date(stats.mtime);
         const now = new Date();
-        const threeHours = 3 * 60 * 60 * 1000;
+        const oneDay = 24 * 60 * 60 * 1000;
 
-        if (now.getTime() - lastModified.getTime() >= threeHours) {
+        if (now.getTime() - lastModified.getTime() >= oneDay) {
           await createExcelPrice();
         }
 
