@@ -28,7 +28,7 @@ import {
 } from '../controllers/users/cart/retail';
 import deleteUser from '../controllers/users/deleteUser';
 import clientSignup from '../controllers/users/auth/clientSignup';
-import usersStats from 'controllers/users/usersStats';
+import usersStats from '../controllers/users/usersStats';
 
 const router = Router();
 // TODO: Add route that allow admin edit user password
