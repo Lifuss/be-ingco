@@ -3,11 +3,21 @@ import User from '../../models/User';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 
 const getAllUsers = ctrlWrapper(async (req: Request, res: Response) => {
-  const { q = '', role = 'user' } = req.query as { q?: string; role?: string };
+  const {
+    q = '',
+    role = 'user',
+    isB2B,
+    isUserVerified,
+  } = req.query as {
+    q?: string;
+    role?: string;
+    isB2B?: boolean;
+    isUserVerified?: boolean;
+  };
 
   const users = await User.find({
     $and: [
-      { role },
+      { role, isB2B, isVerified: isUserVerified },
       {
         $or: [
           { email: { $regex: q, $options: 'i' } },
