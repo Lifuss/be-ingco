@@ -16,7 +16,9 @@ import createOrderRetail from '../controllers/orders/retail/createOrderRetail';
 const router = Router();
 
 router.get('/', authentication, getUserOrders);
+// TODO: refactor for sort and select
 router.get('/all', authAdmin, getAllOrders);
+
 
 router.post('/', authentication, validateBody(createOrderSchema), createOrder);
 router.post(
