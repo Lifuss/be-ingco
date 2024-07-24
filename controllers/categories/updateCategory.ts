@@ -12,7 +12,8 @@ const updateCategory = ctrlWrapper(async (req: Request, res: Response) => {
   validateUpdateInput(id, req.body);
 
   const checkCategory = await Category.findOne({
-    name: name,
+    name,
+    renderSort,
     _id: { $ne: id },
   });
   if (checkCategory) {
