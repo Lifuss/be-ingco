@@ -12,13 +12,13 @@ import getAllOrders from '../controllers/orders/getAllOrders';
 import updateOrder from '../controllers/orders/updateOrder';
 import getUserOrders from '../controllers/orders/getUserOrders';
 import createOrderRetail from '../controllers/orders/retail/createOrderRetail';
+import updateRetailOrder from '../controllers/orders/retail/updateOrderRetail';
 
 const router = Router();
 
 router.get('/', authentication, getUserOrders);
 // TODO: refactor for sort and select
 router.get('/all', authAdmin, getAllOrders);
-
 
 router.post('/', authentication, validateBody(createOrderSchema), createOrder);
 router.post(
@@ -27,6 +27,12 @@ router.post(
   createOrderRetail,
 );
 
+router.put(
+  '/retail/:id',
+  authAdmin,
+  validateBody(updateOrderSchema),
+  updateRetailOrder,
+);
 router.put('/:id', authAdmin, validateBody(updateOrderSchema), updateOrder);
 
 export default router;

@@ -53,14 +53,13 @@ app.use('/api/categories', categoryRouter);
 app.use('/api/orders', orderRouter);
 
 app.use((req: Request, res: Response) => {
-  const error = new Error('Not Found');
+  const error = new Error('Not Found - ' + req.originalUrl);
   res.status(404).json({ message: error.message });
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: RequestError, req: Request, res: Response, _: NextFunction) => {
   const { status = 500, message = 'Server error' } = err;
-  // треба залогувати помилку
   console.log(err.message);
   res.status(status).json({ message });
 });

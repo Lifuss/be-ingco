@@ -31,7 +31,6 @@ import clientSignup from '../controllers/users/auth/clientSignup';
 import usersStats from '../controllers/users/usersStats';
 
 const router = Router();
-// TODO: Add route that allow admin edit user password
 
 router.get('/', authAdmin, getAllUsers);
 router.get('/stats', authAdmin, usersStats);

@@ -1,3 +1,4 @@
+import { orderStatusEnum } from './../../models/Order';
 import Order from '../../models/Order';
 import { Request, Response } from 'express';
 import ctrlWrapper from '../../utils/ctrlWrapper';
@@ -9,23 +10,38 @@ const getAllOrders = ctrlWrapper(async (req: Request, res: Response) => {
     page = 1,
     limit = 15,
     isRetail = 'false',
+    status = 'всі',
   } = req.query as {
     q?: string;
     page?: string;
     limit?: string;
     isRetail?: 'false' | 'true';
+    status?: typeof orderStatusEnum | 'всі';
   };
 
-  const query = {
-    $or: [
-      { orderCode: new RegExp(q, 'i') },
-      { 'user.login': new RegExp(q, 'i') },
-    ],
-  };
+  const query =
+    status === 'всі'
+      ? {
+          $or: [
+            { orderCode: new RegExp(q, 'i') },
+            { 'user.login': new RegExp(q, 'i') },
+          ],
+        }
+      : {
+          $and: [
+            {
+              status,
+            },
+            {
+              $or: [
+                { orderCode: new RegExp(q, 'i') },
+                { 'user.login': new RegExp(q, 'i') },
+              ],
+            },
+          ],
+        };
   let orders;
   let total;
-
-  console.debug('isRetail', isRetail);
 
   if (isRetail === 'true') {
     orders = await RetailOrder.find(query)
