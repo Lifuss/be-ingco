@@ -23,7 +23,8 @@ type orderBody = {
 };
 
 const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
-  const { products, totalPrice, comment } = req.body as orderBody;
+  const { products, totalPrice, comment, shippingAddress } =
+    req.body as orderBody;
   const { _id, email } = req.user as IUser;
 
   const orderCode: number = await getNextSequence('orderCode');
@@ -36,6 +37,7 @@ const createOrder = ctrlWrapper(async (req: CustomRequest, res: Response) => {
       price: product.price,
       totalPriceByOneProduct: product.totalPriceByOneProduct,
     })),
+    shippingAddress,
     user: { userId: _id, login: req.user?.login },
     totalPrice,
     isPaid: false,
