@@ -6,6 +6,7 @@ import {
   loginSchema,
   registerUserClientSchema,
   registerUserSchema,
+  resetPasswordSchema,
   updateUserSchema,
   userSchema,
 } from '../utils/joi';
@@ -31,6 +32,7 @@ import deleteUser from '../controllers/users/deleteUser';
 import clientSignup from '../controllers/users/auth/clientSignup';
 import usersStats from '../controllers/users/usersStats';
 import forgot from 'controllers/users/auth/forgot';
+import resetPassword from 'controllers/users/auth/resetPassword';
 
 const router = Router();
 
@@ -49,6 +51,8 @@ router.post(
 );
 router.post('/login', validateBody(loginSchema), signin);
 router.post('/forgot', validateBody(forgotSchema), forgot);
+router.post('/resetPassword', validateBody(resetPasswordSchema), resetPassword);
+
 router.post('/cart', authentication, addProductToCart);
 router.post('/cart/retail', authentication, addProductToRetailCart);
 router.post('/favorites/:productId', authentication, addFavorites);
