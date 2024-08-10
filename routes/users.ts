@@ -2,6 +2,7 @@ import { Router } from 'express';
 import validateBody from '../middlewares/validateBody';
 import authAdmin from '../middlewares/authAdmin';
 import {
+  forgotSchema,
   loginSchema,
   registerUserClientSchema,
   registerUserSchema,
@@ -29,6 +30,7 @@ import {
 import deleteUser from '../controllers/users/deleteUser';
 import clientSignup from '../controllers/users/auth/clientSignup';
 import usersStats from '../controllers/users/usersStats';
+import forgot from 'controllers/users/auth/forgot';
 
 const router = Router();
 
@@ -46,6 +48,7 @@ router.post(
   clientSignup,
 );
 router.post('/login', validateBody(loginSchema), signin);
+router.post('/forgot', validateBody(forgotSchema), forgot);
 router.post('/cart', authentication, addProductToCart);
 router.post('/cart/retail', authentication, addProductToRetailCart);
 router.post('/favorites/:productId', authentication, addFavorites);

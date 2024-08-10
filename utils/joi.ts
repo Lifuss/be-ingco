@@ -167,3 +167,5 @@ export const updateOrderSchema = Joi.object({
   comment: Joi.string().allow('').optional(),
   shippingAddress: Joi.string().allow('').optional(),
 });
+
+export const forgotSchema = Joi.object({ resetData: Joi.string().required() });
