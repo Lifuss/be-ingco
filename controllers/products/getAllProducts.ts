@@ -34,8 +34,6 @@ const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
     .populate('category')
     .sort({ sort: 'desc' });
 
-  console.log(products[0]);
-
   const total = await Product.countDocuments(query);
 
   const totalPages = Math.ceil(total / +limit);
