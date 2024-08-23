@@ -51,4 +51,5 @@ export interface IProduct {
   createdAt: { $date: string };
   updatedAt: { $date: string };
   rrcSale: number;
+  sort?: number;
 }

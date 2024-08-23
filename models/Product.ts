@@ -25,6 +25,10 @@ const productSchema = new mongoose.Schema(
       ref: 'Category',
       default: null,
     },
+    sort: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true, versionKey: false },
 );
