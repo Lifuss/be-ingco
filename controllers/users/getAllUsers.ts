@@ -8,14 +8,18 @@ const getAllUsers = ctrlWrapper(async (req: Request, res: Response) => {
     role = 'user',
     isB2B,
     isUserVerified,
+    page = '1',
+    limit = '25',
   } = req.query as {
     q?: string;
     role?: string;
     isB2B?: boolean;
     isUserVerified?: boolean;
+    page?: string;
+    limit?: string;
   };
 
-  const users = await User.find({
+  const query = {
     $and: [
       { role, isB2B, isVerified: isUserVerified },
       {
@@ -25,12 +29,20 @@ const getAllUsers = ctrlWrapper(async (req: Request, res: Response) => {
         ],
       },
     ],
-  })
+  };
+
+  const users = await User.find(query)
     .sort({ updatedAt: -1 })
     .select('-password')
-    .populate('orders', 'orderCode totalPrice status');
+    .populate('orders', 'orderCode totalPrice status')
+    .skip((+page - 1) * +limit)
+    .limit(+limit);
 
-  res.json(users);
+  const total = await User.countDocuments(query);
+
+  const totalPages = Math.ceil(total / +limit);
+
+  res.json({ users, total, totalPages });
 });
 
 export default getAllUsers;
