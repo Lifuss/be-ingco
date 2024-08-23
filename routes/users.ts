@@ -31,8 +31,8 @@ import {
 import deleteUser from '../controllers/users/deleteUser';
 import clientSignup from '../controllers/users/auth/clientSignup';
 import usersStats from '../controllers/users/usersStats';
-import forgot from 'controllers/users/auth/forgot';
-import resetPassword from 'controllers/users/auth/resetPassword';
+import forgot from '../controllers/users/auth/forgot';
+import resetPassword from '../controllers/users/auth/resetPassword';
 
 const router = Router();
 
