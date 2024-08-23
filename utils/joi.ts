@@ -13,6 +13,7 @@ export const productSchema = Joi.object({
   seoKeywords: Joi.string().allow('', null),
   countInStock: Joi.number().required(),
   category: Joi.string(),
+  sort: Joi.number(),
   characteristics: Joi.array().items(
     Joi.object({
       name: Joi.string().required(),
@@ -31,14 +32,15 @@ export const updateProductSchema = Joi.object({
   priceRetailRecommendation: Joi.number(),
   countInStock: Joi.number(),
   category: Joi.string().allow('', null),
+  warranty: Joi.number(),
+  seoKeywords: Joi.string().allow('', null),
+  sort: Joi.number(),
   characteristics: Joi.array().items(
     Joi.object({
       name: Joi.string().required(),
       value: Joi.string().required(),
     }),
   ),
-  warranty: Joi.number(),
-  seoKeywords: Joi.string().allow('', null),
 });
 
 export const categorySchema = Joi.object({
