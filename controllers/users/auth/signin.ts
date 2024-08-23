@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import User from '../../../models/User';
 import requestError from '../../../utils/requestError';
-import jwt from 'jsonwebtoken';
 import ctrlWrapper from '../../../utils/ctrlWrapper';
 
 const signin = ctrlWrapper(async (req: Request, res: Response) => {

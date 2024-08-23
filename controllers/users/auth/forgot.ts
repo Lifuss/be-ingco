@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import User from '../../../models/User';
 import ctrlWrapper from '../../../utils/ctrlWrapper';
-import requestError from 'utils/requestError';
-import sendEmail from 'utils/sendEmail';
+import requestError from '../../../utils/requestError';
+import sendEmail from '../../../utils/sendEmail';
 import { randomUUID } from 'crypto';
 import { addHours } from 'date-fns';
 

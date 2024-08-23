@@ -1,9 +1,9 @@
 import { isBefore } from 'date-fns';
 import { Request, Response } from 'express';
-import User from 'models/User';
-import ctrlWrapper from 'utils/ctrlWrapper';
-import requestError from 'utils/requestError';
 import bcrypt from 'bcryptjs';
+import User from '../../../models/User';
+import ctrlWrapper from '../../../utils/ctrlWrapper';
+import requestError from '../../../utils/requestError';
 
 const resetPassword = ctrlWrapper(async (req: Request, res: Response) => {
   const { resetToken, newPassword } = req.body;
