@@ -35,12 +35,11 @@ const forgot = ctrlWrapper(async (req: Request, res: Response) => {
       html: `<h1>Вітаємо!</h1>
     <p>Було створена за'явка по скидуванню паролю</p>
     <p>Якщо це були не ви, то нічого не робіть, якщо це повторюється зверніться до адміністрації сайту у відповідь на цей лист</p>
-    <p>Щоб продовжити скидування перейдіть по <a href="https://ingo-service.win/auth/forgot/${resetToken}" target="_blank" rel="noopener nofollow">посиланню</a></p>
+    <p>Щоб продовжити скидування перейдіть по <a href="https://ingco-service.win/auth/forgot/${resetToken}" target="_blank" rel="noopener nofollow">посиланню</a></p>
     <br />
-    <p>Звертатися по питанням можна у відповідь на це повідомлення, або за контактами на <a href="https://ingo-service.win/home" target="_blank" rel="noopener nofollow">сайті</a></p>
-    <h3>Українській імпортер INGCO та інтернет магазин <a href="https://ingo-service.win" target="_blank" rel="noopener nofollow">"ingco-service"</a></h3>`,
+    <p>Звертатися по питанням можна у відповідь на це повідомлення, або за контактами на <a href="https://ingco-service.win/home/contacts" target="_blank" rel="noopener nofollow">сайті</a></p>
+    <h3>Українській імпортер INGCO та інтернет магазин <a href="https://ingco-service.win" target="_blank" rel="noopener nofollow">"ingco-service"</a></h3>`,
     };
-
     await sendEmail(mail);
   }
 

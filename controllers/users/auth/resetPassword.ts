@@ -19,6 +19,7 @@ const resetPassword = ctrlWrapper(async (req: Request, res: Response) => {
   }
 
   const hashPassword = await bcrypt.hash(newPassword, 5);
+  user.token = '';
   user.password = hashPassword;
   user.resetToken = '';
   user.resetTokenExpires = undefined;
