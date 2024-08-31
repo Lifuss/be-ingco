@@ -176,3 +176,9 @@ export const resetPasswordSchema = Joi.object({
   resetToken: Joi.string().required(),
   newPassword: Joi.string().required(),
 });
+
+export const supportSchema = Joi.object({
+  name: Joi.string().min(2).max(60).required(),
+  email: Joi.string().email().required(),
+  message: Joi.string().min(10).max(500).required(),
+});

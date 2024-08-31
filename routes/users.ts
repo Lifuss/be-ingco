@@ -7,6 +7,7 @@ import {
   registerUserClientSchema,
   registerUserSchema,
   resetPasswordSchema,
+  supportSchema,
   updateUserSchema,
   userSchema,
 } from '../utils/joi';
@@ -33,6 +34,7 @@ import clientSignup from '../controllers/users/auth/clientSignup';
 import usersStats from '../controllers/users/usersStats';
 import forgot from '../controllers/users/auth/forgot';
 import resetPassword from '../controllers/users/auth/resetPassword';
+import support from '../controllers/users/support';
 
 const router = Router();
 
@@ -43,6 +45,7 @@ router.get('/cart', authentication, getCart);
 router.get('/cart/retail', authentication, getRetailCart);
 
 router.post('/', authAdmin, validateBody(userSchema), createUser);
+router.post('/support', validateBody(supportSchema), support);
 router.post('/register', validateBody(registerUserSchema), signup);
 router.post(
   '/register/client',
