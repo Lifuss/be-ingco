@@ -34,7 +34,9 @@ import clientSignup from '../controllers/users/auth/clientSignup';
 import usersStats from '../controllers/users/usersStats';
 import forgot from '../controllers/users/auth/forgot';
 import resetPassword from '../controllers/users/auth/resetPassword';
-import support from '../controllers/users/support';
+import createSupportTicket from '../controllers/users/support/createSupportTicket';
+import getAllSupportTickets from '../controllers/users/support/getAllSupportTickets';
+import updateSupportTicket from '../controllers/users/support/updateSupportTickets';
 
 const router = Router();
 
@@ -43,9 +45,10 @@ router.get('/stats', authAdmin, usersStats);
 router.get('/refresh', authentication, refreshUser);
 router.get('/cart', authentication, getCart);
 router.get('/cart/retail', authentication, getRetailCart);
+router.get('/support', authAdmin, getAllSupportTickets);
 
 router.post('/', authAdmin, validateBody(userSchema), createUser);
-router.post('/support', validateBody(supportSchema), support);
+router.post('/support', validateBody(supportSchema), createSupportTicket);
 router.post('/register', validateBody(registerUserSchema), signup);
 router.post(
   '/register/client',
@@ -55,12 +58,13 @@ router.post(
 router.post('/login', validateBody(loginSchema), signin);
 router.post('/forgot', validateBody(forgotSchema), forgot);
 router.post('/resetPassword', validateBody(resetPasswordSchema), resetPassword);
-
 router.post('/cart', authentication, addProductToCart);
 router.post('/cart/retail', authentication, addProductToRetailCart);
 router.post('/favorites/:productId', authentication, addFavorites);
 
 router.put('/:id', authAdmin, validateBody(updateUserSchema), updateUser);
+
+router.patch('/support/:ticketId', authAdmin, updateSupportTicket);
 
 router.delete('/logout', authentication, signout);
 router.delete('/cart', authentication, deleteProductFromCart);
