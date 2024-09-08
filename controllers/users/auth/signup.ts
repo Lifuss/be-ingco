@@ -20,7 +20,7 @@ const signup = ctrlWrapper(async (req: Request, res: Response) => {
 
   const user = await User.findOne({ email: credentials.email });
   if (user) {
-    throw requestError(400, 'User already exists');
+    throw requestError(409, 'User already exists');
   }
 
   credentials.login = credentials.email.split('@')[0];
