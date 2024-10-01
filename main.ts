@@ -3,12 +3,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import { RequestError } from './utils/requestError';
+import path from 'path';
 
 import productRouter from './routes/products';
 import categoryRouter from './routes/categories';
 import userRouter from './routes/users';
 import orderRouter from './routes/orders';
-import path from 'path';
+import statsRouter from './routes/stats';
 
 dotenv.config();
 
@@ -51,6 +52,7 @@ app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/stats', statsRouter);
 
 app.use((req: Request, res: Response) => {
   const error = new Error('Not Found - ' + req.originalUrl);
