@@ -22,74 +22,22 @@ const getProductClicks = ctrlWrapper(async (req: Request, res: Response) => {
     return;
   }
 
-  // Агрегація для вибірки кліків за датами
-  const productClicks = await ProductStats.aggregate([
-    {
-      $match: {
-        clickDates: {
-          $elemMatch: {
-            $gte: start, // Фільтрація кліків більше або дорівнює startDate
-            $lte: end, // Фільтрація кліків менше або дорівнює endDate
-          },
-        },
-      },
-    },
-    {
-      $project: {
-        productId: 1,
-        clicksInRange: {
-          $size: {
-            $filter: {
-              input: '$clickDates', // Фільтруємо масив `clickDates`
-              as: 'clickDate',
-              cond: {
-                $and: [
-                  { $gte: ['$$clickDate', start] }, // Фільтрація за startDate
-                  { $lte: ['$$clickDate', end] }, // Фільтрація за endDate
-                ],
-              },
-            },
-          },
-        },
-      },
-    },
-    {
-      $skip: (page - 1) * limit,
-    },
-    {
-      $limit: limit,
-    },
-    {
-      $lookup: {
-        from: 'products',
-        localField: 'productId',
-        foreignField: '_id',
-        as: 'productDetails',
-      },
-    },
-    {
-      $unwind: '$productDetails',
-    },
-    {
-      $project: {
-        productId: 1,
-        clicksInRange: 1,
-        'productDetails.name': 1, // Показуємо назву продукту
-      },
-    },
-  ]);
+  // Пошук продуктів з кліками в межах дат, з пагінацією
+  const productClicks = await ProductStats.find({
+    clickDates: { $gte: start, $lte: end },
+  })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .populate('productId', 'name') // Підтягуємо деталі продукту
+    .lean(); // Перетворення документів у plain JavaScript об'єкти для підвищення продуктивності
 
+  // Підрахунок загальної кількості документів
   const total = await ProductStats.countDocuments({
-    clickDates: {
-      $elemMatch: {
-        $gte: start,
-        $lte: end,
-      },
-    },
+    clickDates: { $gte: start, $lte: end },
   });
 
-  const totalPages = Math.ceil(total / +limit);
-  const hasMore = +page < totalPages;
+  const totalPages = Math.ceil(total / limit);
+  const hasMore = page < totalPages;
 
   res.status(200).json({
     message: 'Successful',
