@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import ProductStats from 'models/ProductsStats';
-import ctrlWrapper from 'utils/ctrlWrapper';
+import ProductStats from '../../models/ProductsStats';
+import ctrlWrapper from '../../utils/ctrlWrapper';
 
 const getLastWeekDate = () => {
   const date = new Date();
@@ -22,14 +22,55 @@ const getProductClicks = ctrlWrapper(async (req: Request, res: Response) => {
     return;
   }
 
-  // Пошук продуктів з кліками в межах дат, з пагінацією
-  const productClicks = await ProductStats.find({
-    clickDates: { $gte: start, $lte: end },
-  })
-    .skip((page - 1) * limit)
-    .limit(limit)
-    .populate('productId', 'name') // Підтягуємо деталі продукту
-    .lean(); // Перетворення документів у plain JavaScript об'єкти для підвищення продуктивності
+  const productClicks = await ProductStats.aggregate([
+    {
+      $match: {
+        clickDates: {
+          $elemMatch: {
+            $gte: start, // Стартова дата з діапазону
+            $lte: end, // Кінцева дата з діапазону
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        productId: 1,
+        clicksInRange: {
+          $size: {
+            $filter: {
+              input: '$clickDates', // Фільтруємо масив `clickDates`
+              as: 'clickDate',
+              cond: {
+                $and: [
+                  { $gte: ['$$clickDate', start] }, // Фільтруємо за startDate
+                  { $lte: ['$$clickDate', end] }, // Фільтруємо за endDate
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: 'products',
+        localField: 'productId',
+        foreignField: '_id',
+        as: 'productDetails',
+      },
+    },
+    {
+      $unwind: '$productDetails',
+    },
+    {
+      $project: {
+        productId: 1,
+        clicksInRange: 1,
+        'productDetails.name': 1, // Відображаємо назву продукту
+      },
+    },
+  ]);
 
   // Підрахунок загальної кількості документів
   const total = await ProductStats.countDocuments({
