@@ -29,12 +29,15 @@ const getUserActivityStats = ctrlWrapper(
     }
 
     // Запит на вибірку користувачів, у яких `updatedAt` знаходиться в діапазоні
-    const users = await User.find({
-      updatedAt: {
-        $gte: start,
-        $lte: end,
+    const users = await User.find(
+      {
+        updatedAt: {
+          $gte: start,
+          $lte: end,
+        },
       },
-    })
+      'updatedAt',
+    )
       .skip((numericPage - 1) * numericLimit)
       .limit(numericLimit);
 
