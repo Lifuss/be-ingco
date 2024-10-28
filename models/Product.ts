@@ -25,6 +25,7 @@ const productSchema = new mongoose.Schema(
       ref: 'Category',
       default: null,
     },
+    barcode: { type: String, default: null },
     sort: {
       type: Number,
       default: 0,

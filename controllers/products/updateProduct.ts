@@ -14,7 +14,6 @@ const updateProduct = ctrlWrapper(async (req: Request, res: Response) => {
 
   validateUpdateInput(id, body);
 
-  // TODO if image new - delete old image
   if (image) {
     const oldPath = path.join(__dirname, '..', '..', 'tmp', image.filename);
     const newPath = path.join(__dirname, '..', '..', 'static', image.filename);

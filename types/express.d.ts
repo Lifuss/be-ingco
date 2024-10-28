@@ -52,4 +52,5 @@ export interface IProduct {
   updatedAt: { $date: string };
   rrcSale: number;
   sort?: number;
+  barcode?: string;
 }
