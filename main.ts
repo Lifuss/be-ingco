@@ -14,7 +14,7 @@ import statsRouter from './routes/stats';
 dotenv.config();
 
 const app = express();
-
+// TODO: update logger to min useful information
 // Logger for static files
 const staticFilesLogger = morgan(function (tokens, req, res) {
   let url = tokens.url(req, res);
