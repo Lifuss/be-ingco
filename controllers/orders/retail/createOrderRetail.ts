@@ -54,8 +54,6 @@ const createOrderRetail = ctrlWrapper(
 
       user = await User.findById(id);
     }
-    console.log('user', user);
-    console.log('token', token);
 
     const order = await RetailOrder.create({
       orderCode,

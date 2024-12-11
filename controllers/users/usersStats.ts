@@ -7,7 +7,6 @@ const usersStats = ctrlWrapper(async (req: Request, res: Response) => {
     isVerified: false,
     isB2B: true,
   });
-  console.log(notVerified);
 
   res.json({ notVerified });
 });

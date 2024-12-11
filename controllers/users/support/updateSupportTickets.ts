@@ -5,8 +5,6 @@ import ctrlWrapper from '../../../utils/ctrlWrapper';
 const updateSupportTicket = ctrlWrapper(async (req: Request, res: Response) => {
   const { ticketId } = req.params;
   const { isAnswered } = req.body;
-  console.log(typeof isAnswered, isAnswered);
-  console.log(ticketId);
 
   const updatedTicket = await Support.findByIdAndUpdate(ticketId, {
     isAnswered,

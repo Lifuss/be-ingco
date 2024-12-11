@@ -11,7 +11,6 @@ enum SheetType {
 
 const getSheet = ctrlWrapper(async (req: Request, res: Response) => {
   const { sheetType } = req.query as { sheetType: SheetType };
-  console.log(sheetType);
 
   switch (sheetType) {
     case 'prom':

@@ -34,10 +34,6 @@ const updateRetailOrder = ctrlWrapper(async (req: Request, res: Response) => {
     updateData.totalPrice = newTotalPrice;
   }
 
-  console.log('updateData', updateData);
-
-  console.log('id', id);
-
   const order = await RetailOrder.findByIdAndUpdate(id, updateData, {
     new: true,
   }).populate('products.product', 'name');
