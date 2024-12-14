@@ -14,7 +14,7 @@ const getAllProducts = ctrlWrapper(async (req: Request, res: Response) => {
     limit?: string;
     category?: string;
   };
-
+  // TODO: Update filters
   let query = {
     $or: [
       { name: { $regex: q, $options: 'i' } },
