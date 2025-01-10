@@ -36,7 +36,7 @@ export const updateProductSchema = Joi.object({
   warranty: Joi.number(),
   seoKeywords: Joi.string().allow('', null),
   sort: Joi.number(),
-  barcode: Joi.string(),
+  barcode: Joi.string().empty(''),
   characteristics: Joi.array().items(
     Joi.object({
       name: Joi.string().required(),
