@@ -10,11 +10,13 @@ import upload from '../middlewares/upload';
 import authAdmin from '../middlewares/authAdmin';
 import authentication from '../middlewares/authentication';
 import getSheet from '../controllers/products/sheet/getSheet';
+import getProductsIds from '../controllers/products/getProductsIds';
 
 const router = Router();
 
 router.get('/', getAllProducts);
 router.get('/sheets', authentication, getSheet);
+router.get('/ids', getProductsIds);
 router.get('/:id', getById);
 
 router.post(
