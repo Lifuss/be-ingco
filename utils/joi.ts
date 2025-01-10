@@ -14,7 +14,7 @@ export const productSchema = Joi.object({
   countInStock: Joi.number().required(),
   category: Joi.string(),
   sort: Joi.number(),
-  barcode: Joi.string(),
+  barcode: Joi.string().empty(''),
   characteristics: Joi.array().items(
     Joi.object({
       name: Joi.string().required(),
