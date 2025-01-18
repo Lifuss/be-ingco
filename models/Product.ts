@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
+import { slugify } from 'transliteration';
 
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+    slug: {
+      type: String,
+      unique: true,
+    },
     article: { type: String, required: true },
     description: { type: String },
     characteristics: [
@@ -33,6 +38,28 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true, versionKey: false },
 );
+
+productSchema.pre('save', async function (next) {
+  if (!this.isModified('name')) return next();
+
+  const baseSlug = slugify(this.name)
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+
+  let slug = baseSlug;
+  let counter = 1;
+
+  while (await mongoose.models.Product.findOne({ slug })) {
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+
+  this.slug = slug;
+  next();
+});
 
 const Product = mongoose.model('Product', productSchema);
 

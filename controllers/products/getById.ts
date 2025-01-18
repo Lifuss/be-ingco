@@ -3,6 +3,7 @@ import ctrlWrapper from '../../utils/ctrlWrapper';
 import Product from '../../models/Product';
 import mongoose from 'mongoose';
 
+// Deprecated
 const getById = ctrlWrapper(async (req: Request, res: Response) => {
   const { id } = req.params;
 
