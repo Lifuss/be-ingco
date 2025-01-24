@@ -17,7 +17,7 @@ const signin = ctrlWrapper(async (req: Request, res: Response) => {
     throw requestError(401, 'Invalid password');
   }
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-    expiresIn: '48h',
+    expiresIn: '7d',
   });
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
