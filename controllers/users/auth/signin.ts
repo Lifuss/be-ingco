@@ -12,36 +12,26 @@ const signin = ctrlWrapper(async (req: Request, res: Response) => {
   if (!user) {
     throw requestError(404, 'User not found');
   }
+
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     throw requestError(401, 'Invalid password');
   }
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
+
+  user.token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
     expiresIn: '7d',
   });
-  const updatedUser = await User.findByIdAndUpdate(
-    user._id,
-    { token },
-    { new: true },
-  )
-    .select('-password')
-    .populate('cart.productId')
-    .populate('favorites');
 
-  res.json({
-    login: updatedUser?.login,
-    role: updatedUser?.role,
-    isVerified: updatedUser?.isVerified,
-    isB2B: updatedUser?.isB2B,
-    token: updatedUser?.token,
-    favorites: updatedUser?.favorites,
-    cart: updatedUser?.cart,
-    cartRetail: updatedUser?.cartRetail,
-    firstName: updatedUser?.firstName,
-    lastName: updatedUser?.lastName,
-    email: updatedUser?.email,
-    phone: updatedUser?.phone,
-  });
+  await user.save();
+
+  await user.populate('cart.productId');
+  await user.populate('favorites');
+
+  const responseUser = {
+    ...user.toObject(),
+    password: undefined,
+  };
+  res.json(responseUser);
 });
 
 export default signin;
