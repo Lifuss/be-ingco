@@ -101,6 +101,10 @@ const userSchema = new mongoose.Schema(
     resetTokenExpires: {
       type: Date,
     },
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true, versionKey: false },
 );

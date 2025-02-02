@@ -8,6 +8,7 @@ const getAllUsers = ctrlWrapper(async (req: Request, res: Response) => {
     role = 'user',
     isB2B,
     isUserVerified,
+    isDeleted = 'true',
     page = '1',
     limit = '25',
   } = req.query as {
@@ -15,9 +16,12 @@ const getAllUsers = ctrlWrapper(async (req: Request, res: Response) => {
     role?: string;
     isB2B?: boolean;
     isUserVerified?: boolean;
+    isDeleted?: boolean;
     page?: string;
     limit?: string;
   };
+
+  const isDeletedBoolean = isDeleted === 'true';
 
   const query = {
     $and: [
@@ -28,9 +32,9 @@ const getAllUsers = ctrlWrapper(async (req: Request, res: Response) => {
           { login: { $regex: q, $options: 'i' } },
         ],
       },
+      { deleted: { $ne: !isDeletedBoolean } },
     ],
   };
-
   const users = await User.find(query)
     .sort({ updatedAt: -1 })
     .select('-password')

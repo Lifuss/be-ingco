@@ -37,6 +37,7 @@ import resetPassword from '../controllers/users/auth/resetPassword';
 import createSupportTicket from '../controllers/users/support/createSupportTicket';
 import getAllSupportTickets from '../controllers/users/support/getAllSupportTickets';
 import updateSupportTicket from '../controllers/users/support/updateSupportTickets';
+import restoreUser from '../controllers/users/restoreUser';
 
 const router = Router();
 
@@ -61,6 +62,7 @@ router.post('/resetPassword', validateBody(resetPasswordSchema), resetPassword);
 router.post('/cart', authentication, addProductToCart);
 router.post('/cart/retail', authentication, addProductToRetailCart);
 router.post('/favorites/:productId', authentication, addFavorites);
+router.post('/restore/:id', authAdmin, restoreUser);
 
 router.put('/:id', authAdmin, validateBody(updateUserSchema), updateUser);
 

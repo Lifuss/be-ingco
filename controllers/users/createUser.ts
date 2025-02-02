@@ -11,7 +11,17 @@ const createUser = ctrlWrapper(async (req: Request, res: Response) => {
   const checkUser = await User.findOne({
     $or: [{ email: user.email }, { login: user.login }],
   });
+
   if (checkUser) {
+    if (checkUser.deleted) {
+      checkUser.deleted = false;
+      checkUser.password = await bcrypt.hash(user.password, 5);
+      await checkUser.save();
+
+      res.status(200).json({ message: 'Акаунт відновлено', user: checkUser });
+      return;
+    }
+
     throw requestError(409, 'User already exists');
   }
   const hashPassword = await bcrypt.hash(user.password, 5);

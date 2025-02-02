@@ -6,6 +6,7 @@ const usersStats = ctrlWrapper(async (req: Request, res: Response) => {
   const notVerified = await User.countDocuments({
     isVerified: false,
     isB2B: true,
+    deleted: false,
   });
 
   res.json({ notVerified });
