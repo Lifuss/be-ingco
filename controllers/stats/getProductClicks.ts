@@ -27,8 +27,8 @@ const getProductClicks = ctrlWrapper(async (req: Request, res: Response) => {
       $match: {
         clickDates: {
           $elemMatch: {
-            $gte: start, // Стартова дата з діапазону
-            $lte: end, // Кінцева дата з діапазону
+            $gte: start,
+            $lte: end,
           },
         },
       },
@@ -39,7 +39,7 @@ const getProductClicks = ctrlWrapper(async (req: Request, res: Response) => {
         clicksInRange: {
           $size: {
             $filter: {
-              input: '$clickDates', // Фільтруємо масив `clickDates`
+              input: '$clickDates',
               as: 'clickDate',
               cond: {
                 $and: [
@@ -70,7 +70,7 @@ const getProductClicks = ctrlWrapper(async (req: Request, res: Response) => {
         'productDetails.name': 1, // Відображаємо назву продукту
       },
     },
-  ]);
+  ]).limit(limit * page);
 
   // Підрахунок загальної кількості документів
   const total = await ProductStats.countDocuments({
