@@ -1,0 +1,20 @@
+[2024-12-23T12:51:32.248Z] [401] Unauthorized - GET /api/users/refresh
+[2025-01-10T09:48:27.254Z] [401] Unauthorized - GET /api/users/refresh
+[2025-01-10T09:52:28.834Z] [400] "barcode" is not allowed to be empty - POST /api/products
+[2025-01-10T09:54:43.515Z] [400] "barcode" is not allowed to be empty - POST /api/products
+[2025-01-10T09:57:04.068Z] [400] "barcode" is not allowed to be empty - POST /api/products
+[2025-01-18T16:22:39.518Z] [401] Unauthorized - GET /api/users/refresh
+[2025-01-18T16:25:05.315Z] [500] Product validation failed: slug: Path `slug` is required. - POST /api/products
+[2025-01-18T16:25:43.806Z] [500] Image is required - POST /api/products
+[2025-01-18T16:25:52.804Z] [500] Product validation failed: slug: Path `slug` is required. - POST /api/products
+[2025-01-18T16:29:53.744Z] [500] Image is required - POST /api/products
+[2025-01-23T11:34:52.744Z] [401] Unauthorized - GET /api/users/refresh
+[2025-01-24T17:45:15.566Z] [404] User not found - POST /api/users/login
+[2025-01-24T17:45:59.310Z] [404] User not found - POST /api/users/login
+[2025-01-24T17:45:59.900Z] [404] User not found - POST /api/users/login
+[2025-01-24T18:27:51.354Z] [401] Invalid password - POST /api/users/login
+[2025-01-28T14:12:00.451Z] [401] Unauthorized - GET /api/users/refresh
+[2025-01-28T14:17:53.277Z] [401] Unauthorized - DELETE /api/users/logout
+[2025-01-28T14:17:54.714Z] [401] Unauthorized - DELETE /api/users/logout
+[2025-01-28T15:26:41.543Z] [500] No document found for query "{ _id: new ObjectId('6659a6a6d18f4094a8edf54a') }" on model "User" - POST /api/users/login
+[2025-01-28T15:29:09.655Z] [500] No document found for query "{ _id: new ObjectId('6659a6a6d18f4094a8edf54a') }" on model "User" - POST /api/users/login
