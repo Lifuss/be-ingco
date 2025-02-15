@@ -70,7 +70,7 @@ const exportProductColumnsPromUa = [
   { header: 'Де_знаходиться_товар', key: 'productLocation' },
 ];
 
-export const createExcelPromUa = async (): Promise<void> => {
+export const createExcelPromUa = async (fileName: string): Promise<void> => {
   const products = await Product.find();
   const data = products.map((product) => {
     const htmlDescription = product.characteristics
@@ -143,7 +143,7 @@ export const createExcelPromUa = async (): Promise<void> => {
   worksheet.columns = exportProductColumnsPromUa;
   worksheet.addRows(data);
 
-  await workbook.xlsx.writeFile(createPath('productsProm.xlsx'));
+  await workbook.xlsx.writeFile(createPath(fileName));
 };
 
 const exportProductColumnsPrice = [
@@ -185,7 +185,7 @@ const exportProductColumnsPrice = [
   },
 ];
 
-export const createExcelPrice = async (): Promise<void> => {
+export const createExcelPrice = async (fileName: string): Promise<void> => {
   const products = await Product.find();
 
   const workbook = new ExcelJS.Workbook();
@@ -256,7 +256,7 @@ export const createExcelPrice = async (): Promise<void> => {
   }
 
   try {
-    await workbook.xlsx.writeFile(createPath('productsPrice.xlsx'));
+    await workbook.xlsx.writeFile(createPath(fileName));
   } catch (error) {
     console.error('Error writing the file:', error);
   }
