@@ -10,6 +10,7 @@ enum SheetType {
   PRICE = 'price',
 }
 
+// TODO: price request is bugging
 const getSheet = ctrlWrapper(async (req: Request, res: Response) => {
   const { sheetType } = req.query as { sheetType: SheetType };
 
@@ -57,7 +58,6 @@ const getSheet = ctrlWrapper(async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 async function createExcelFile(
   lockKey: string,
   sheetType: SheetType,
