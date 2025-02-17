@@ -10,6 +10,12 @@ enum SheetType {
   PRICE = 'price',
 }
 
+// Time in milliseconds, for how long the file is considered up-to-date (for now it the same for both types)
+enum TimesMap {
+  prom = 7 * 24 * 60 * 60 * 1000,
+  price = 7 * 24 * 60 * 60 * 1000,
+}
+
 const getSheet = ctrlWrapper(async (req: Request, res: Response) => {
   const { sheetType } = req.query as { sheetType: SheetType };
 
@@ -36,11 +42,7 @@ const getSheet = ctrlWrapper(async (req: Request, res: Response) => {
   const stats = await fs.stat(filePath);
   const lastModified = new Date(stats.mtime);
   const now = new Date();
-
-  const timeDiff =
-    sheetType === SheetType.PRICE
-      ? 24 * 60 * 60 * 1000
-      : 7 * 24 * 60 * 60 * 1000;
+  const timeDiff = TimesMap[sheetType];
 
   try {
     if (now.getTime() - lastModified.getTime() >= timeDiff) {
