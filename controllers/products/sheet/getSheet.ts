@@ -10,7 +10,6 @@ enum SheetType {
   PRICE = 'price',
 }
 
-// TODO: price request is bugging
 const getSheet = ctrlWrapper(async (req: Request, res: Response) => {
   const { sheetType } = req.query as { sheetType: SheetType };
 
@@ -67,7 +66,7 @@ async function createExcelFile(
 ) {
   if (!acquireLock(lockKey)) {
     res.status(202).json({
-      message: 'Файл формується, спробуйте через декілька секунд.',
+      message: 'File is being created. Try again in a few seconds',
     });
     return;
   }
