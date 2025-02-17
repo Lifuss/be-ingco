@@ -5,7 +5,6 @@ import requestError from '../../utils/requestError';
 
 const deleteUser = ctrlWrapper(async (req: Request, res: Response) => {
   const { id } = req.params;
-  // TODO: when deleting user transfer them to archive
 
   const user = await User.findByIdAndUpdate(id, { deleted: true });
   if (!user) {
