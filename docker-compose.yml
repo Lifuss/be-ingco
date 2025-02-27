@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - '3030:3030'
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
