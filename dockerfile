@@ -19,7 +19,6 @@ RUN npm install --only=production
 
 COPY --from=builder /app/dist ./dist
 
-# Порт бекенду (той же що в docker-compose)
-EXPOSE 8080
+EXPOSE 3030
 
 CMD ["npm", "start"]
