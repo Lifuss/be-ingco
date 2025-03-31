@@ -3,15 +3,12 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 
-// === 📁 Тимчасова директорія ===
 const tempDir = path.resolve('tmp');
 
-// Якщо tmp не існує — створюємо
 if (!fs.existsSync(tempDir)) {
   fs.mkdirSync(tempDir, { recursive: true });
 }
 
-// === 🧠 Налаштування сховища ===
 const multerConfig = multer.diskStorage({
   destination: (_req, _file, cb) => {
     cb(null, tempDir);
@@ -24,7 +21,6 @@ const multerConfig = multer.diskStorage({
   },
 });
 
-// === 🛡️ Фільтр для зображень ===
 const fileFilter: multer.Options['fileFilter'] = (_req, file, cb) => {
   const allowedMime = ['image/jpeg', 'image/png', 'image/webp'];
   if (allowedMime.includes(file.mimetype)) {
@@ -34,7 +30,6 @@ const fileFilter: multer.Options['fileFilter'] = (_req, file, cb) => {
   }
 };
 
-// === 📦 Основний upload middleware ===
 const upload = multer({
   storage: multerConfig,
   limits: {
