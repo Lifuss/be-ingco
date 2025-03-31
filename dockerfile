@@ -19,6 +19,6 @@ RUN npm install --only=production
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 3030
+EXPOSE 8080
 
 CMD ["npm", "start"]
