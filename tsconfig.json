@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "lib": ["es2015", "es2017", "dom"],
-    "allowJs": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "target": "es5",
+    "target": "es2020",
     "module": "CommonJS",
-    "outDir": "dist",
+    "lib": ["es2020", "dom"],
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "."
+    "skipLibCheck": true
   },
-  "include": ["**/*.ts", "**/*.json", "./types/*.d.ts", ".eslintrc.js"]
+  "include": ["./**/*.ts", "./types/*.d.ts"],
+  "exclude": ["dist", "node_modules", "**/*.test.ts"]
 }
