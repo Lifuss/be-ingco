@@ -19,7 +19,7 @@ export const productSchema = Joi.object({
     Joi.object({
       name: Joi.string().required(),
       value: Joi.string().required(),
-    }),
+    })
   ),
 });
 
@@ -41,7 +41,7 @@ export const updateProductSchema = Joi.object({
     Joi.object({
       name: Joi.string().required(),
       value: Joi.string().required(),
-    }),
+    })
   ),
 });
 
@@ -111,6 +111,7 @@ export const updateUserSchema = Joi.object({
   favorites: Joi.array().items(Joi.string()),
   token: Joi.string(),
   _id: Joi.string(),
+  deleted: Joi.boolean(),
 });
 
 export const loginSchema = Joi.object({
@@ -125,7 +126,7 @@ export const createOrderSchema = Joi.object({
       quantity: Joi.number().required(),
       totalPriceByOneProduct: Joi.number().required(),
       price: Joi.number().required(),
-    }),
+    })
   ),
   shippingAddress: Joi.string().allow(''),
   totalPrice: Joi.number().required(),
@@ -138,7 +139,7 @@ export const createOrderRetailSchema = Joi.object({
       quantity: Joi.number().required(),
       totalPriceByOneProduct: Joi.number().required(),
       price: Joi.number().required(),
-    }),
+    })
   ),
   shippingAddress: Joi.string().allow(''),
   totalPrice: Joi.number().required(),
@@ -163,7 +164,7 @@ export const updateOrderSchema = Joi.object({
         quantity: Joi.number().required(),
         totalPriceByOneProduct: Joi.number().required(),
         price: Joi.number().required(),
-      }),
+      })
     )
     .optional(),
   totalPrice: Joi.number().optional(),
