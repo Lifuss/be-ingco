@@ -54,3 +54,30 @@ export interface IProduct {
   sort?: number;
   barcode?: string;
 }
+
+export interface IOrder {
+  _id: mongoose.Types.ObjectId;
+  orderCode: string;
+  status: string;
+  products: {
+    product: IProduct;
+    quantity: number;
+    totalPriceByOneProduct: number;
+    price: number;
+  }[];
+  shippingAddress: string;
+  declarationNumber: string;
+  user: {
+    userId: mongoose.Types.ObjectId;
+    login: string;
+  };
+  totalPrice: number;
+  payment: {
+    method: string;
+    status: string;
+  };
+  isPaid: boolean;
+  comment?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

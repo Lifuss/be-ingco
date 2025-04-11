@@ -16,7 +16,7 @@ type Data = {
 
 sgMail.setApiKey(SENDGRID_API_KEY);
 
-const sendEmail = async (data: Data) => {
+const sendEmail = async (data: Data): Promise<boolean> => {
   const mail = { ...data, from: EMAIL_FROM };
   if (NODE_ENV === 'production') {
     await sgMail.send(mail);

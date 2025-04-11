@@ -1,7 +1,8 @@
-import ExcelJS from 'exceljs';
+import ExcelJS, { Workbook } from 'exceljs';
 import path from 'path';
 import Product from '../models/Product';
 import sharp from 'sharp';
+import { IOrder } from '../types/express';
 
 function createPath(fileName: string) {
   return path.resolve('static', 'sheets', fileName);
@@ -77,7 +78,7 @@ export const createExcelPromUa = async (fileName: string): Promise<void> => {
       .map((char) =>
         char.value !== '-'
           ? `<p><strong>${char.name}</strong>: ${char.value}</p>`
-          : `<p><strong>${char.name}</strong></p>`,
+          : `<p><strong>${char.name}</strong></p>`
       )
       .join('');
 
@@ -236,10 +237,7 @@ export const createExcelPrice = async (fileName: string): Promise<void> => {
     if (product.image) {
       // const imagePath = path.join(__dirname, product.image); // Шлях до зображення webp
 
-      const imagePath = path.resolve(
-        'static',
-        product.image.split('static/')[1],
-      ); // Шлях до зображення webp
+      const imagePath = path.resolve('static', product.image.split('static/')[1]); // Шлях до зображення webp
       const imageBuffer = await convertWebpToPng(imagePath); // Конвертація зображення
       const imageId = workbook.addImage({
         buffer: imageBuffer,
@@ -260,4 +258,129 @@ export const createExcelPrice = async (fileName: string): Promise<void> => {
   } catch (error) {
     console.error('Error writing the file:', error);
   }
+};
+
+/**
+ * Генерує Excel‑файл замовлення із вбудованими зображеннями продуктів.
+ * Зображення обрізається/масштабується до 60x60 пікселів і конвертується до формату PNG.
+ *
+ * @param order Замовлення типу IOrder. Поле products.product повинно містити повний об'єкт IProduct.
+ * @returns Буфер файлу Excel.
+ */
+export const generateOrderExcel = async (order: IOrder): Promise<Buffer> => {
+  const workbook = new Workbook();
+  const worksheet = workbook.addWorksheet(`Замовлення ${order.orderCode}`);
+
+  worksheet.columns = [
+    { header: '№', key: 'no', width: 5 },
+    {
+      header: 'Артикул',
+      key: 'article',
+      width: 15,
+    },
+    {
+      header: 'Найменування',
+      key: 'name',
+      width: 40,
+    },
+    {
+      header: 'К-сть',
+      key: 'quantity',
+      width: 10,
+    },
+    {
+      header: 'ціна$',
+      key: 'price',
+      width: 10,
+    },
+    {
+      header: 'сума$',
+      key: 'total',
+      width: 10,
+    },
+    {
+      header: 'РРЦ₴',
+      key: 'rrc',
+      width: 10,
+    },
+    {
+      header: 'Фото',
+      key: 'photo',
+      width: 10,
+    },
+  ];
+
+  const headerRow = worksheet.getRow(1);
+
+  headerRow.eachCell((cell) => {
+    cell.font = { bold: true, size: 12 };
+    cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    cell.border = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' },
+    };
+  });
+
+  for (let index = 0; index < order.products.length; index++) {
+    const prod = order.products[index];
+
+    const row = worksheet.addRow({
+      no: index + 1,
+      article: prod.product.article,
+      name: prod.product.name,
+      quantity: prod.quantity,
+      price: prod.price,
+      total: prod.totalPriceByOneProduct,
+      rrc: prod.product.priceRetailRecommendation,
+      photo: '', // зображення буде додано окремо
+    });
+
+    row.height = 45;
+    row.alignment = { vertical: 'middle', horizontal: 'center' };
+
+    const nameCell = row.getCell('name');
+    nameCell.alignment = { wrapText: true, vertical: 'middle', horizontal: 'centerContinuous' };
+
+    const rowNumber = row.number;
+
+    if (prod.product.image) {
+      try {
+        const imageFilePath = path.join(process.cwd(), prod.product.image);
+
+        const imageBuffer = await sharp(imageFilePath).resize(60, 60).png().toBuffer();
+
+        const imageId = workbook.addImage({
+          buffer: imageBuffer,
+          extension: 'png',
+        });
+
+        // Розташовуємо зображення у клітинці колонки "Фото".
+        // Нумерація колонок починається з 0: номер 7 відповідає восьмій колонці (ключ "photo").
+        // Також зауважте, що координати (row, col) при позиціюванні зображення в ExcelJS починаються з 0.
+        worksheet.addImage(imageId, {
+          tl: { col: 7, row: rowNumber - 1 }, // top-left: колонки: 8-1, рядки: rowNumber - 1
+          ext: { width: 60, height: 60 },
+        });
+      } catch (error) {
+        console.error(
+          `Помилка при обробці зображення для продукту ${prod.product.article}:`,
+          error
+        );
+      }
+    }
+  }
+
+  worksheet.addRow({});
+  const summaryRow = worksheet.addRow({
+    name: 'Загальна сума',
+    total: order.totalPrice,
+  });
+  summaryRow.getCell('name').font = { bold: true };
+  summaryRow.getCell('total').font = { bold: true };
+
+  const data = await workbook.xlsx.writeBuffer();
+
+  return Buffer.from(data);
 };
