@@ -101,7 +101,7 @@ export const createExcelPromUa = async (fileName: string): Promise<void> => {
       minOrderAmount: 1,
       // wholesalePrice: product.price,
       // minWholesaleOrder: 1,
-      imageLink: 'https://be-ingco.store' + product.image,
+      imageLink: 'https://api-ingco-service.win' + product.image,
       availability: 'в наявності',
       amount: product.countInStock,
       groupNumber: 1,
