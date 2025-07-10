@@ -26,7 +26,21 @@ const getCurrency = ctrlWrapper(async (req: Request, res: Response) => {
     }
 
     const response = await fetch('https://api.monobank.ua/bank/currency');
+
+    if (!response.ok) {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error(`Invalid content type: ${contentType}`);
+    }
+
     const data = await response.json();
+
+    if (!Array.isArray(data) || data.length < 2) {
+      throw new Error('Invalid data structure from API');
+    }
 
     const newBody = {
       USD: parseFloat(data[0].rateSell.toFixed(1)),
@@ -36,17 +50,20 @@ const getCurrency = ctrlWrapper(async (req: Request, res: Response) => {
     currencyCache.data = newBody;
     currencyCache.timestamp = now;
 
-    console.log('Currency cache updated:', newBody);
     res.status(200).json(newBody);
   } catch (error) {
-    console.log(error);
+    console.log('Currency API error:', error);
+
     if (currencyCache.data) {
       console.log('API request failed, returning cached data as fallback');
       res.status(200).json(currencyCache.data);
       return;
     }
 
-    throw new Error('Invalid currency data received');
+    res.status(500).json({
+      message: 'Currency service temporarily unavailable',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
   }
 });
 
