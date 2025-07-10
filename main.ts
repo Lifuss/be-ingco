@@ -11,6 +11,7 @@ import categoryRouter from './routes/categories';
 import userRouter from './routes/users';
 import orderRouter from './routes/orders';
 import statsRouter from './routes/stats';
+import utilsRouter from './routes/utils';
 
 dotenv.config();
 
@@ -33,7 +34,7 @@ app.use(
     maxAge: '1y',
     etag: true,
     lastModified: true,
-  }),
+  })
 );
 
 // === API Routes ===
@@ -42,6 +43,7 @@ app.use('/api/products', productRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/stats', statsRouter);
+app.use('/api/utils', utilsRouter);
 
 // === 404 ===
 app.use((req: Request, res: Response) => {
