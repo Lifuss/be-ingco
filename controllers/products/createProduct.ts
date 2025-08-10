@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
+import fs from 'fs/promises';
+import path from 'path';
 import Product from '../../models/Product';
 import ctrlWrapper from '../../utils/ctrlWrapper';
-import path from 'path';
-import fs from 'fs/promises'; // використовуємо промісну версію
 
 export type TProductBody = {
   name: string;
@@ -39,8 +39,16 @@ const createProduct = ctrlWrapper(async (req: Request, res: Response) => {
 
   req.body.image = `/static/${image.filename}`;
 
-  const product = await Product.create(req.body as TProductBody);
-  res.status(201).json(product);
+  try {
+    const product = await Product.create(req.body as TProductBody);
+    res.status(201).json(product);
+  } catch (err) {
+    // Rollback newly saved file on DB failure
+    try {
+      await fs.unlink(newPath);
+    } catch (_) {}
+    throw err;
+  }
 });
 
 export default createProduct;
