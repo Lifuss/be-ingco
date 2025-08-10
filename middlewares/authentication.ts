@@ -8,7 +8,7 @@ import User from '../models/User';
 const authentication = async (
   req: CustomRequest,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const { authorization = '' } = req.headers;

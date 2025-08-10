@@ -4,11 +4,7 @@ import requestError from '../utils/requestError';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
-const authAdmin = async (
-  req: CustomRequest,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
+const authAdmin = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { authorization = '' } = req.headers;
 
@@ -28,10 +24,7 @@ const authAdmin = async (
     if (user && user.role === 'admin' && user.token && user.token === token) {
       req.user = user.toObject() as IUser;
     } else {
-      throw requestError(
-        403,
-        'Forbidden: You do not have enough rights to perform this action',
-      );
+      throw requestError(403, 'Forbidden: You do not have enough rights to perform this action');
     }
 
     next();
