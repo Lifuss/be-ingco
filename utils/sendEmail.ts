@@ -19,7 +19,20 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 const sendEmail = async (data: Data): Promise<boolean> => {
   const mail = { ...data, from: EMAIL_FROM };
   if (NODE_ENV === 'production') {
-    await sgMail.send(mail);
+    try {
+      await sgMail.send(mail);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown email service error';
+      const responseBody =
+        typeof error === 'object' && error !== null && 'response' in error
+          ? (error as { response?: { body?: unknown } }).response?.body
+          : undefined;
+      console.error(
+        `[${new Date().toISOString()}] Failed to send email "${mail.subject}" to "${mail.to}": ${message}`,
+        responseBody
+      );
+      return false;
+    }
   } else {
     console.info(`DEV:mock email ${mail.subject} send to ${mail.to} from ${mail.from}`);
   }
